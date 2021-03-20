@@ -21,6 +21,23 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+  /roomTypes:
+    get:
+      summary: 'Returns all the room types'
+      operationId: 'getRoomTypes'
+      responses:
+        '200':
+          description: 'Returned all the room types'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoomTypesResponse'
+        '500':
+          description: 'Something went wrong on the servers side'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
   /floorMap:
     get:
       summary: 'Returns all the information needed to render the floor'
@@ -137,6 +154,13 @@ components:
           type: 'array'
           items:
             type: 'integer'
+    RoomTypesResponse:
+      type: 'object'
+      properties:
+        types:
+          type: 'array'
+          items:
+            type: 'string'
     FloorMapRequest:
       type: 'object'
       properties:
@@ -156,6 +180,8 @@ components:
                 type: 'string'
               id:
                 type: 'integer'
+              floorId:
+                type: 'integer'
               nodes:
                 type: 'object'
                 properties:
@@ -165,12 +191,6 @@ components:
                     type: 'number'
                   y:
                     type: 'number'
-                  floorId:
-                    type: 'integer'
-        types:
-          type: 'array'
-          items:
-            type: 'string'
     FiltersResponse:
       type: 'object'
       properties:
@@ -180,11 +200,21 @@ components:
             type: 'object'
             properties:
               name:
-                type: 'string'
+                type: 'object'
+                properties:
+                  name:
+                    type: 'string'
+                  id:
+                    type: 'integer'
               possibleValues:
                 type: 'array'
                 items:
-                  type: 'string'
+                  type: 'object'
+                  properties:
+                    name:
+                      type: 'string'
+                    id:
+                      type: 'integer'
     FilteredRoomsRequest:
       type: 'object'
       properties:
@@ -193,10 +223,10 @@ components:
           items:
             type: 'object'
             properties:
-              name:
-                type: 'string'
-              value:
-                type: 'string'
+              id:
+                type: 'integer'
+              valueId:
+                type: 'integer'
     FilteredRoomsResponse:
       type: 'object'
       properties:
@@ -214,19 +244,24 @@ components:
     PathResponse:
       type: 'object'
       properties:
-        pathNodes:
+        floorPaths:
           type: 'array'
           items:
             type: 'object'
             properties:
-              order:
+              floorId:  
                 type: 'integer'
-              x:
-                type: 'number'
-              y:
-                type: 'number'
-              floorId:
-                type: 'integer'
+              nodes:
+                type: 'array'
+                items:
+                  type: 'object'
+                  properties:
+                    order:
+                      type: 'integer'
+                    x:
+                      type: 'number'
+                    y:
+                      type: 'number'
     ErrorResponse:
       type: 'object'
       properties:

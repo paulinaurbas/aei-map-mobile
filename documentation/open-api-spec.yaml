@@ -1,0 +1,269 @@
+openapi: '3.0.0'
+info:
+  version: '1.0.0'
+  title: 'Winstrybutor Maps'
+  description: 'API shooting carefully not at the instrybutor '
+paths:
+  /floors:
+    get:
+      summary: 'Returns all the floor IDs'
+      operationId: 'getFloors'
+      responses:
+        '200':
+          description: 'Returned all the floor IDs'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FloorsResponse'
+        '500':
+          description: 'Something went wrong on the servers side'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /roomTypes:
+    get:
+      summary: 'Returns all the room types'
+      operationId: 'getRoomTypes'
+      responses:
+        '200':
+          description: 'Returned all the room types'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoomTypesResponse'
+        '500':
+          description: 'Something went wrong on the servers side'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /floorMap:
+    get:
+      summary: 'Returns all the information needed to render the floor'
+      operationId: 'getFloorMap'
+      requestBody:
+        description: 'Floor ID'
+        required: true
+        content:
+          application/json:
+              schema:
+                $ref: '#/components/schemas/FloorMapRequest'
+      responses:
+        '200':
+          description: 'Returned all the floor information needed'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FloorMapResponse'
+        '404':
+          description: 'There is no floor for the given ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: 'Something went wrong on the servers side'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /filters:
+    get:
+      summary: 'Returns all the possible filter attributes'
+      operationId: 'getFilters'
+      responses:
+        '200':
+          description: 'Returned all possible filter attributes'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FiltersResponse'
+        '500':
+          description: 'Something went wrong on the servers side'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /filteredRooms:
+    get:
+      summary: 'Returns all the IDs of the filtered rooms'
+      operationId: 'getFilteredRooms'
+      requestBody:
+        description: 'Provided filters'
+        required: true
+        content:
+          application/json:
+              schema:
+                $ref: '#/components/schemas/FilteredRoomsRequest'
+      responses:
+        '200':
+          description: 'Returned all the filtered rooms IDs'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FilteredRoomsResponse'
+        '400':
+          description: 'Wrong filter attribute provided'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: 'Something went wrong on the servers side'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /path:
+    get:
+      summary: 'Returns the path from one place to another'
+      operationId: 'getPath'
+      requestBody:
+        description: 'Places IDs'
+        required: true
+        content:
+          application/json:
+              schema:
+                $ref: '#/components/schemas/PathRequest'
+      responses:
+        '200':
+          description: 'Returned the path from one place to another'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PathResponse'
+        '404':
+          description: 'So such place'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: 'Something went wrong on the servers side'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  schemas:
+    FloorsResponse:
+      type: 'object'
+      properties:
+        floorsIds: 
+          type: 'array'
+          items:
+            type: 'integer'
+    RoomTypesResponse:
+      type: 'object'
+      properties:
+        types:
+          type: 'array'
+          items:
+            type: 'string'
+    FloorMapRequest:
+      type: 'object'
+      properties:
+        floorId:
+          type: 'integer'
+    FloorMapResponse:
+      type: 'object'
+      properties:
+        rooms:
+          type: 'array'
+          items:
+            type: 'object'
+            properties:
+              name:
+                type: 'string'
+              type:
+                type: 'string'
+              id:
+                type: 'integer'
+              floorId:
+                type: 'integer'
+              nodes:
+                type: 'object'
+                properties:
+                  order:
+                    type: 'integer'
+                  x:
+                    type: 'number'
+                  y:
+                    type: 'number'
+    FiltersResponse:
+      type: 'object'
+      properties:
+        filters:
+          type: 'array'
+          items:
+            type: 'object'
+            properties:
+              name:
+                type: 'object'
+                properties:
+                  name:
+                    type: 'string'
+                  id:
+                    type: 'integer'
+              possibleValues:
+                type: 'array'
+                items:
+                  type: 'object'
+                  properties:
+                    name:
+                      type: 'string'
+                    id:
+                      type: 'integer'
+    FilteredRoomsRequest:
+      type: 'object'
+      properties:
+        filters:
+          type: 'array'
+          items:
+            type: 'object'
+            properties:
+              id:
+                type: 'integer'
+              valueId:
+                type: 'integer'
+    FilteredRoomsResponse:
+      type: 'object'
+      properties:
+        roomIds:
+          type: 'array'
+          items:
+            type: 'string'
+    PathRequest:
+      type: 'object'
+      properties:
+        startRoomId:
+          type: 'integer'
+        finishRoomId:
+          type: 'integer'
+    PathResponse:
+      type: 'object'
+      properties:
+        floorPaths:
+          type: 'array'
+          items:
+            type: 'object'
+            properties:
+              floorId:  
+                type: 'integer'
+              nodes:
+                type: 'array'
+                items:
+                  type: 'object'
+                  properties:
+                    order:
+                      type: 'integer'
+                    x:
+                      type: 'number'
+                    y:
+                      type: 'number'
+    ErrorResponse:
+      type: 'object'
+      properties:
+        error:
+          type: 'string'

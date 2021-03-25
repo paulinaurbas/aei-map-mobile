@@ -1,3 +1,6 @@
+import 'package:aei_map_mobile/features/filter_screen/screens/filter_screen.dart';
+import 'package:aei_map_mobile/features/map_screen/screens/map_screen.dart';
+import 'package:aei_map_mobile/features/path_screen/screens/path_screen.dart';
 import 'package:aei_map_mobile/styles/app_strings.dart';
 import 'package:flutter/material.dart';
 
@@ -11,10 +14,7 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 0;
-  final List<Widget> _children = [
-    // TODO: Change the placeholders to the real screens
-    _placeholder('map'), _placeholder('filter'), _placeholder('path'),
-  ];
+  final List<Widget> _children = [MapScreen(), FilterScreen(), PathScreen()];
 
   @override
   Widget build(BuildContext context) {
@@ -50,10 +50,3 @@ class _MainScreenState extends State<MainScreen> {
     });
   }
 }
-
-// TODO: Delete it after all
-Widget _placeholder(String s) => Center(
-      child: Text(s,
-          style: TextStyle(
-              fontSize: 30, fontWeight: FontWeight.bold, color: Colors.black)),
-    );

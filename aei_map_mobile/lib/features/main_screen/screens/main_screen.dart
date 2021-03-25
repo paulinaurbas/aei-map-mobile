@@ -12,19 +12,8 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 0;
   final List<Widget> _children = [
-    // TODO: Change it to real screens
-    Center(
-      child: Text('map',
-          style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
-    ),
-    Center(
-      child: Text('filter',
-          style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
-    ),
-    Center(
-      child: Text('path',
-          style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
-    ),
+    // TODO: Change the placeholders to the real screens
+    _placeholder('map'), _placeholder('filter'), _placeholder('path'),
   ];
 
   @override
@@ -38,15 +27,15 @@ class _MainScreenState extends State<MainScreen> {
         onTap: onTabTapped, // new
         currentIndex: _currentIndex, // new
         items: [
-          new BottomNavigationBarItem(
+          BottomNavigationBarItem(
             icon: Icon(Icons.map),
             label: appStrings['mapBarIcon'],
           ),
-          new BottomNavigationBarItem(
+          BottomNavigationBarItem(
             icon: Icon(Icons.search),
             label: appStrings['filterBarIcon'],
           ),
-          new BottomNavigationBarItem(
+          BottomNavigationBarItem(
             icon: Icon(Icons.directions_walk),
             label: appStrings['pathBarIcon'],
           ),
@@ -61,3 +50,10 @@ class _MainScreenState extends State<MainScreen> {
     });
   }
 }
+
+// TODO: Delete it after all
+Widget _placeholder(String s) => Center(
+      child: Text(s,
+          style: TextStyle(
+              fontSize: 30, fontWeight: FontWeight.bold, color: Colors.black)),
+    );

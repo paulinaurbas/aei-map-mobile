@@ -1,4 +1,3 @@
-
 import 'package:aei_map_mobile/styles/app_strings.dart';
 import 'package:flutter/material.dart';
 
@@ -26,12 +25,16 @@ class _MainScreenState extends State<MainScreen> {
         currentIndex: _currentIndex, // new
         items: [
           new BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            title: Text('Home'),
+            icon: Icon(Icons.map),
+            label: 'Map',
           ),
           new BottomNavigationBarItem(
-            icon: Icon(Icons.mail),
-            title: Text('Messages'),
+            icon: Icon(Icons.search),
+            label: 'Filter',
+          ),
+          new BottomNavigationBarItem(
+            icon: Icon(Icons.directions_walk),
+            label: 'Path',
           ),
         ],
       ),

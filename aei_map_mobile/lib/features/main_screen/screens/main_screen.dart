@@ -1,4 +1,6 @@
-
+import 'package:aei_map_mobile/features/filter_screen/screens/filter_screen.dart';
+import 'package:aei_map_mobile/features/map_screen/screens/map_screen.dart';
+import 'package:aei_map_mobile/features/path_screen/screens/path_screen.dart';
 import 'package:aei_map_mobile/styles/app_strings.dart';
 import 'package:flutter/material.dart';
 
@@ -12,7 +14,7 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 0;
-  final List<Widget> _children = [];
+  final List<Widget> _children = [MapScreen(), FilterScreen(), PathScreen()];
 
   @override
   Widget build(BuildContext context) {
@@ -20,18 +22,22 @@ class _MainScreenState extends State<MainScreen> {
       appBar: AppBar(
         title: Text(appStrings["aeiMap"]),
       ),
-      //  body: _children[_currentIndex], // new
+      body: _children.elementAt(_currentIndex),
       bottomNavigationBar: BottomNavigationBar(
         onTap: onTabTapped, // new
         currentIndex: _currentIndex, // new
         items: [
-          new BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            title: Text('Home'),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.map),
+            label: appStrings['mapBarIcon'],
           ),
-          new BottomNavigationBarItem(
-            icon: Icon(Icons.mail),
-            title: Text('Messages'),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.search),
+            label: appStrings['filterBarIcon'],
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.directions_walk),
+            label: appStrings['pathBarIcon'],
           ),
         ],
       ),

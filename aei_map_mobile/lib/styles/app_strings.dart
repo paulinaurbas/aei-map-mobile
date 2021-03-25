@@ -1,3 +1,6 @@
 const Map<String, String> appStrings = {
-'aeiMap': 'AEI map',
+  'aeiMap': 'AEI map',
+  'mapBarIcon': 'Map',
+  'filterBarIcon': 'Filter',
+  'pathBarIcon': 'Path'
 };

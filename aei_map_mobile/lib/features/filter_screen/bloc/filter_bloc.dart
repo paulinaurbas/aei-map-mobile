@@ -6,26 +6,35 @@ import 'package:aei_map_mobile/features/filter_screen/model/model.dart';
 class FilterBloc extends BlocProvider {
   final FilterScreenRepository _repository = FilterScreenRepository();
 
-  final PublishSubject<List<Filter>> _possibleFilters = PublishSubject();
+  final BehaviorSubject<FiltersGetResponse> _filtersGetResponse =
+      BehaviorSubject();
   final BehaviorSubject<List<Filter>> _checkedFilters = BehaviorSubject();
-  final PublishSubject<List<int>> _filteredRooms = PublishSubject();
+  final BehaviorSubject<FilteredRoomsGetResponse> _filteredRoomsGetResponse =
+      BehaviorSubject();
 
-  getFiltres() {
-    _repository.getFilters().then((value) => _possibleFilters.sink.add(value));
+  getFiltres() async {
+    FiltersGetResponse response = await _repository.getFilters();
+    _filtersGetResponse.sink.add(response);
   }
+
+  BehaviorSubject<FiltersGetResponse> get filtersGetResponse =>
+      _filtersGetResponse;
 
   Function(List<Filter>) get changeFilters => _checkedFilters.sink.add;
 
-  getFilteredRooms() {
-    _repository
-        .getFilteredRooms(_checkedFilters.valueWrapper.value)
-        .then((value) => _filteredRooms.sink.add(value));
+  getFilteredRooms() async {
+    FilteredRoomsGetResponse response =
+        await _repository.getFilteredRooms(_checkedFilters.valueWrapper.value);
+    _filteredRoomsGetResponse.sink.add(response);
   }
+
+  BehaviorSubject<FilteredRoomsGetResponse> get filteredRoomsGetResponse =>
+      _filteredRoomsGetResponse;
 
   @override
   void dispose() {
-    _possibleFilters.close();
+    _filtersGetResponse.close();
     _checkedFilters.close();
-    _filteredRooms.close();
+    _filteredRoomsGetResponse.close();
   }
 }

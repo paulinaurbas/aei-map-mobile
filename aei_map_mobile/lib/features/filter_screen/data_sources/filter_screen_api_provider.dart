@@ -1,8 +1,10 @@
 import 'package:aei_map_mobile/features/filter_screen/model/model.dart';
+import 'dart:async';
 
 class FilterScreenApiProvider {
   Future<FiltersGetResponse> getFilters() async {
     // TODO: Get the real data. It's just a mock one
+    await new Future.delayed(const Duration(seconds: 3));
     return FiltersGetResponse([
       Filter(StringDataType("does it have computers", 0), [
         StringDataType("no", 0),
@@ -30,6 +32,7 @@ class FilterScreenApiProvider {
   Future<FilteredRoomsGetResponse> getFilteredRooms(
       List<Filter> checkedFilters) async {
     // TODO: Get the real data. It's just a mock one
+    await new Future.delayed(const Duration(seconds: 3));
     return FilteredRoomsGetResponse([3, 14, 15, 92], "");
   }
 }

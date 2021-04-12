@@ -1,5 +1,5 @@
 import 'package:aei_map_mobile/features/filter_screen/bloc/filter_bloc.dart';
-import 'package:aei_map_mobile/features/filter_screen/model/model.dart';
+import 'package:aei_map_mobile/features/filter_screen/model/filter.dart';
 import 'package:flutter/material.dart';
 
 class FilterScreen extends StatefulWidget {
@@ -18,13 +18,10 @@ class _FilterScreenState extends State<FilterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<FiltersGetResponse>(
+    return StreamBuilder<List<Filter>>(
       stream: _bloc.filters.stream,
-      builder: (context, AsyncSnapshot<FiltersGetResponse> snapshot) {
+      builder: (context, AsyncSnapshot<List<Filter>> snapshot) {
         if (snapshot.hasData) {
-          if (snapshot.data.error != null && snapshot.data.error.length > 0) {
-            return _buildErrorWidget(snapshot.data.error);
-          }
           return _buildFiltersWidget(snapshot.data);
         } else if (snapshot.hasError) {
           return _buildErrorWidget(snapshot.error);
@@ -35,7 +32,7 @@ class _FilterScreenState extends State<FilterScreen> {
     );
   }
 
-  Widget _buildFiltersWidget(FiltersGetResponse filters) {
+  Widget _buildFiltersWidget(List<Filter> filters) {
     // TODO: Build filters widgets iteratively. Get to know
     //       on how to gather input from all the filters
     //       and pass them alter to the BLoC. And when to

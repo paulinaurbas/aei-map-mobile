@@ -1,5 +1,6 @@
 import 'package:aei_map_mobile/features/filter_screen/bloc/filter_bloc.dart';
 import 'package:aei_map_mobile/features/filter_screen/model/filter.dart';
+import 'package:aei_map_mobile/styles/widgets/aei_map_button.dart';
 import 'package:flutter/material.dart';
 
 class FilterScreen extends StatefulWidget {
@@ -41,13 +42,30 @@ class _FilterScreenState extends State<FilterScreen> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
+        ListView.builder(
+            padding: const EdgeInsets.all(8),
+            itemCount: filters.length,
+            itemBuilder: (BuildContext context, int index) {
+              return Container(
+                height: 50,
+                color: Colors.amber[50],
+                child: Center(child: Text('${filters[index].name.name}')),
+              );
+            }),
         Row(mainAxisAlignment: MainAxisAlignment.center, children: [
           Text('filters',
               style: TextStyle(
                   fontSize: 30,
                   fontWeight: FontWeight.bold,
                   color: Colors.black)),
-        ])
+        ]),
+        AeiMapButton(
+          buttonDescription: 'Find matching rooms',
+          onPressed: () {
+            // TODO: How to pass the filters from all the widgets?
+            _bloc.changeFilters([]);
+          },
+        )
       ],
     );
   }

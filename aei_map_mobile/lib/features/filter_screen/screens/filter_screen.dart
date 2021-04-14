@@ -34,36 +34,26 @@ class _FilterScreenState extends State<FilterScreen> {
   }
 
   Widget _buildFiltersWidget(List<Filter> filters) {
-    // TODO: Build filters widgets iteratively. Get to know
-    //       on how to gather input from all the filters
-    //       and pass them alter to the BLoC. And when to
-    //       call getFilteredRooms() AND what to do with
-    //       the response :')
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         ListView.builder(
             padding: const EdgeInsets.all(8),
+            shrinkWrap: true,
             itemCount: filters.length,
             itemBuilder: (BuildContext context, int index) {
               return Container(
                 height: 50,
-                color: Colors.amber[50],
                 child: Center(child: Text('${filters[index].name.name}')),
               );
             }),
-        Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-          Text('filters',
-              style: TextStyle(
-                  fontSize: 30,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black)),
-        ]),
         AeiMapButton(
           buttonDescription: 'Find matching rooms',
           onPressed: () {
             // TODO: How to pass the filters from all the widgets?
             _bloc.changeFilters([]);
+            // TODO: Fetch the filtered rooms. And there is a question:
+            //       what to do after the fetching of the filtered rooms?
           },
         )
       ],
@@ -72,14 +62,9 @@ class _FilterScreenState extends State<FilterScreen> {
 
   Widget _buildLoadingWidget() {
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-      Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-        Text("Loading filters from API...",
-            style: TextStyle(
-                fontSize: 30,
-                fontWeight: FontWeight.bold,
-                color: Colors.black)),
-        CircularProgressIndicator()
-      ])
+      Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [CircularProgressIndicator()])
     ]);
   }
 
@@ -89,10 +74,7 @@ class _FilterScreenState extends State<FilterScreen> {
       children: [
         Row(mainAxisAlignment: MainAxisAlignment.center, children: [
           Text('Error occured: $error',
-              style: TextStyle(
-                  fontSize: 30,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black)),
+              style: TextStyle(fontSize: 30, color: Colors.white)),
         ])
       ],
     );

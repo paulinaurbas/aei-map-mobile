@@ -15,7 +15,8 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 0;
-  final List<Widget> _children = [MapScreen(), FilterScreen(), PathScreen()];
+
+  final List<Widget> _children = [MapScreen('assets/images/Test12.jpg'), FilterScreen(), PathScreen()];
 
   @override
   Widget build(BuildContext context) {

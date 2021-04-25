@@ -9,8 +9,6 @@ import 'dart:async';
 import 'package:aei_map_mobile/features/map_screen/widgets/map_render_wtih_lib.dart';
 
 class MapScreen extends StatefulWidget {
-  MapScreen();
-
   @override
   _MapScreenState createState() => _MapScreenState();
 }

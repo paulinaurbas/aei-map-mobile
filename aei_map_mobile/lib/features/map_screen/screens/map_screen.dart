@@ -9,16 +9,13 @@ import 'dart:async';
 import 'package:aei_map_mobile/features/map_screen/widgets/map_render_wtih_lib.dart';
 
 class MapScreen extends StatefulWidget {
-  final String imagePath;
-  MapScreen(this.imagePath);
+  MapScreen();
 
   @override
-  _MapScreenState createState() => new _MapScreenState(imagePath);
+  _MapScreenState createState() => _MapScreenState();
 }
 
 class _MapScreenState extends State<MapScreen> {
-  _MapScreenState(this.path);
-  final String path;
   Image image;
   Size _imageSize;
   MapBloc mapBloc = MapBloc();

@@ -11,7 +11,6 @@ class RoomModel {
       :  room = json["room"],
         floorId = json["floor_id"],
         listOfNodes= (json['nodes'] as List).map((i)=>Node.fromJson(i)).toList(),
-        // List<Node>.from(json['nodes']),
         type = json["type"],
         id = json["id"];
 

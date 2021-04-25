@@ -22,7 +22,8 @@ class _MapScreenState extends State<MapScreen> {
   Image image;
   Size _imageSize;
   MapBloc mapBloc = MapBloc();
-  String recognizedText = "Loading ...";
+  int floorNumber = 0;
+  List <int> floors;
 
   void _initializeVision() async {
     await _getImage();
@@ -45,7 +46,14 @@ class _MapScreenState extends State<MapScreen> {
   @override
   void initState() {
     _initializeVision();
-    mapBloc.getRoomList(context);
+    mapBloc.getFloorsId(context);
+
+    mapBloc.floorList.stream.listen((event) {
+      if(event != null){
+        floors = event;
+        mapBloc.getRoomList(context, event.first);
+      }
+    });
     super.initState();
   }
 
@@ -58,55 +66,81 @@ class _MapScreenState extends State<MapScreen> {
               if (snapshot.hasData) {
                 return Stack(
                   children: <Widget>[
-                    Center(
-                      child: Container(
-                        width: double.maxFinite,
-                        color: Colors.black,
-                        child: CustomPaint(
-                          foregroundPainter: TextDetectorPainter(
-                              _imageSize,
-                              MediaQuery.of(context).size,
-                              snapshot.data),
-                          child: AspectRatio(
-                            aspectRatio: _imageSize.aspectRatio,
-                            child: image,
-                          ),
-                        ),
-                      ),
-                    ),
-                    Align(
-                      alignment: Alignment.bottomRight,
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                            bottom: 40.0, right: 20),
-                        child: AeiMapButton(
-                          buttonDescription: appStrings['nextFloor'],
-                          onPressed: () {},
-                        ),
-                      ),
-                    )
+                    getMapTitle,
+                    getDrawnMap(snapshot.data),
+                    if(floorNumber < floors.length) getNextBottomButton,
+                    if(floorNumber > 0) getPrevoiusBottomButton
                   ],
                 );
-              } else {
-                return Container(
-                  color: Colors.black26,
-                  child: Center(
-                    child: CircularProgressIndicator(
-                      valueColor: new AlwaysStoppedAnimation<Color>(
-                          appColors['primary_app_color']),
-                    ),
-                  ),
-                );
-              }
+              } else
+                return getIndicator;
             })
-        : Container(
-            color: Colors.black26,
-            child: Center(
-              child: CircularProgressIndicator(
-                valueColor: new AlwaysStoppedAnimation<Color>(
-                    appColors['primary_app_color']),
-              ),
-            ),
-          );
+        : getIndicator;
   }
+
+  Widget get getIndicator =>  Container(
+    color: Colors.black26,
+    child: Center(
+      child: CircularProgressIndicator(
+        valueColor: new AlwaysStoppedAnimation<Color>(
+            appColors['primary_app_color']),
+      ),
+    ),
+  );
+
+  Widget get getMapTitle =>  Align(
+    alignment: Alignment.topCenter,
+    child: Padding(
+      padding: const EdgeInsets.only(top: 70.0),
+      child: Text('Floor: $floorNumber', style: TextStyle(fontSize: 25)),
+    ),
+  );
+
+  Widget getDrawnMap(List<RoomModel> listWithRooms) => Center(
+    child: Container(
+      width: double.maxFinite,
+      color: Colors.black,
+      child: CustomPaint(
+        foregroundPainter: RenderMap(_imageSize,
+            MediaQuery.of(context).size, listWithRooms),
+        child: AspectRatio(
+          aspectRatio: _imageSize.aspectRatio,
+          child: image,
+        ),
+      ),
+    ),
+  );
+
+  Widget get getNextBottomButton => Align(
+    alignment: Alignment.bottomRight,
+    child: Padding(
+      padding: const EdgeInsets.only(bottom: 40.0, right: 20),
+      child: AeiMapButton(
+        buttonDescription: appStrings['nextFloor'],
+        onPressed: () {
+          setState(() {
+            floorNumber++;
+          });
+          mapBloc.getRoomList(context, floorNumber);
+        },
+      ),
+    ),
+  );
+
+  Widget get getPrevoiusBottomButton => Align(
+    alignment: Alignment.bottomLeft,
+    child: Padding(
+      padding: const EdgeInsets.only(bottom: 40.0, left: 20),
+      child: AeiMapButton(
+        buttonDescription: appStrings['previousFloor'],
+        onPressed: () {
+          setState(() {
+            floorNumber--;
+          });
+          mapBloc.getRoomList(context, floorNumber);
+        },
+      ),
+    ),
+  );
+
 }

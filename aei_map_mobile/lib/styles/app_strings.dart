@@ -6,5 +6,6 @@ const Map<String, String> appStrings = {
   'startPoint': 'Start point',
   'endPoint': 'End point',
   'findPath': 'Find path',
-  'nextFloor': 'Next floor!'
+  'nextFloor': 'Next floor!',
+  'previousFloor': 'Previous',
 };

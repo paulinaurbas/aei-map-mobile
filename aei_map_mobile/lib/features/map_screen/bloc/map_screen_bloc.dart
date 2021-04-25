@@ -8,12 +8,16 @@ import 'package:rxdart/rxdart.dart';
 class MapBloc extends BlocProvider {
   final MapScreenRepository _mapScreenRepository = MapScreenRepository();
   BehaviorSubject <List<RoomModel>> roomList = BehaviorSubject();
+  BehaviorSubject <List<int>> floorList = BehaviorSubject();
 
-  getRoomList(BuildContext context) => _mapScreenRepository.listWithRooms(context).then((value) => roomList.sink.add(value));
+  getFloorsId(BuildContext context) async => await _mapScreenRepository.getFloorsId(context).then((value) => floorList.sink.add(value));
+
+  getRoomList(BuildContext context, int floorNumber) => _mapScreenRepository.listWithRooms(context, floorNumber).then((value) => roomList.sink.add(value));
 
 
   @override
   void dispose() {
     roomList.close();
+    floorList.close();
   }
 }

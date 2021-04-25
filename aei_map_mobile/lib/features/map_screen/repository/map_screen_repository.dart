@@ -5,5 +5,7 @@ import 'package:flutter/cupertino.dart';
 class MapScreenRepository {
   MapApiProvider mapApiProvider = MapApiProvider();
 
-  Future<List<RoomModel>> listWithRooms(BuildContext context) => mapApiProvider.drawMapFromCoordinates(context);
+  Future<List<RoomModel>> listWithRooms(BuildContext context, int floorNumber) => mapApiProvider.drawMapFromCoordinates(context, floorNumber);
+
+  Future<List<int>> getFloorsId(BuildContext context) =>  mapApiProvider.getFloorsId(context);
 }

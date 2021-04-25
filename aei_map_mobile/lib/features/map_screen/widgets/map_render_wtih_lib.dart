@@ -3,8 +3,8 @@ import 'package:aei_map_mobile/features/map_screen/models/room_model.dart';
 import 'package:aei_map_mobile/styles/app_colors.dart';
 import 'package:flutter/material.dart';
 
-class TextDetectorPainter extends CustomPainter {
-  TextDetectorPainter(this.absoluteImageSize, this.phoneSize, this._roomModel);
+class RenderMap extends CustomPainter {
+  RenderMap(this.absoluteImageSize, this.phoneSize, this._roomModel);
   final Size phoneSize;
   final List<RoomModel> _roomModel;
 
@@ -38,7 +38,7 @@ class TextDetectorPainter extends CustomPainter {
 
 
   @override
-  bool shouldRepaint(TextDetectorPainter oldDelegate) {
+  bool shouldRepaint(RenderMap oldDelegate) {
     return true;
   }
 }

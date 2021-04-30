@@ -1,4 +1,5 @@
 import 'package:aei_map_mobile/features/map_screen/bloc/map_screen_bloc.dart';
+import 'package:aei_map_mobile/features/map_screen/models/floor_model.dart';
 import 'package:aei_map_mobile/features/map_screen/models/room_model.dart';
 import 'package:aei_map_mobile/styles/app_colors.dart';
 import 'package:aei_map_mobile/styles/app_strings.dart';
@@ -55,14 +56,14 @@ class _MapScreenState extends State<MapScreen> {
   @override
   Widget build(BuildContext context) {
     return _imageSize != null
-        ? StreamBuilder<List<RoomModel>>(
+        ? StreamBuilder<Floor>(
             stream: mapBloc.roomList.stream,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 return Stack(
                   children: <Widget>[
                     getMapTitle,
-                    getDrawnMap(snapshot.data),
+                    getDrawnMap(snapshot.data.rooms),
                     if(floorNumber < floors.length) getNextBottomButton,
                     if(floorNumber > 0) getPrevoiusBottomButton
                   ],

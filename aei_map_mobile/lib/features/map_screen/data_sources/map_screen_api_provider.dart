@@ -1,19 +1,16 @@
 import 'dart:convert';
+import 'package:aei_map_mobile/features/map_screen/models/floor_model.dart';
 import 'package:aei_map_mobile/features/map_screen/models/room_model.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 
 class MapApiProvider {
+  final client = Dio();
 
-  Future <List<RoomModel>> drawMapFromCoordinates(BuildContext context, int floorNumber) async {
-    String data = '';
-    if(floorNumber == 2){
-       data = await DefaultAssetBundle.of(context).loadString("assets/json/map_floor_zero.json");
-    } else {
-       data = await DefaultAssetBundle.of(context).loadString("assets/json/map.json");
-    }
-    Map<String, dynamic> decodedtRooms = jsonDecode(data);
-    List<dynamic> decodedJson =  decodedtRooms['rooms'];
-    return decodedJson.map((elem) => RoomModel.fromJson(elem)).toList();
+  Future <Floor> drawMapFromCoordinates(BuildContext context, int floorNumber) async {
+  return client.get('https://aeimap.azurewebsites.net/api/Floor/1').then((value) {
+      return Floor.fromJson(value.data);
+    });
   }
 
   Future<List<int>> getFloorsId(BuildContext context) async {

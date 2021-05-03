@@ -5,7 +5,7 @@ import 'dart:async';
 class FilterScreenApiProvider {
   Future<List<Filter>> getFilters() async {
     // TODO: Get the real data. It's just a mock one
-    await Future.delayed(const Duration(seconds: 3));
+    await Future.delayed(const Duration(seconds: 1));
     return [
       Filter(StringId("does it have computers", 0),
           [StringId("no", 0), StringId("a bunch", 1), StringId("a lot", 2)]),
@@ -29,7 +29,7 @@ class FilterScreenApiProvider {
 
   Future<List<int>> getFilteredRooms(List<Filter> checkedFilters) async {
     // TODO: Get the real data. It's just a mock one
-    await Future.delayed(const Duration(seconds: 3));
+    await Future.delayed(const Duration(seconds: 1));
     return [3, 14, 15, 92];
   }
 }

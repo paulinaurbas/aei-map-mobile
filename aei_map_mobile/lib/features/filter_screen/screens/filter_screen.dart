@@ -1,5 +1,6 @@
 import 'package:aei_map_mobile/features/filter_screen/bloc/filter_bloc.dart';
 import 'package:aei_map_mobile/features/filter_screen/model/filter.dart';
+import 'package:aei_map_mobile/features/filter_screen/widgets/filter_selection.dart';
 import 'package:aei_map_mobile/styles/widgets/aei_map_button.dart';
 import 'package:flutter/material.dart';
 
@@ -10,6 +11,7 @@ class FilterScreen extends StatefulWidget {
 
 class _FilterScreenState extends State<FilterScreen> {
   final FilterBloc _bloc = FilterBloc();
+  List<Filter> selectedFilters;
 
   @override
   void initState() {
@@ -42,18 +44,16 @@ class _FilterScreenState extends State<FilterScreen> {
             shrinkWrap: true,
             itemCount: filters.length,
             itemBuilder: (BuildContext context, int index) {
-              return Container(
-                height: 50,
-                child: Center(child: Text('${filters[index].name.name}')),
-              );
+              return FilterSelection(
+                  onChanged: () => {}, filter: filters[index]);
             }),
         AeiMapButton(
           buttonDescription: 'Find matching rooms',
           onPressed: () {
-            // TODO: How to pass the filters from all the widgets?
-            _bloc.changeFilters([]);
+            _bloc.changeFilters(selectedFilters);
             // TODO: Fetch the filtered rooms. And there is a question:
             //       what to do after the fetching of the filtered rooms?
+            // Navigator.of(context).push(route, arguments: event)
           },
         )
       ],

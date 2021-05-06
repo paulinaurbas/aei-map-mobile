@@ -15,8 +15,15 @@ class _FilterScreenState extends State<FilterScreen> {
 
   @override
   void initState() {
-    super.initState();
     _bloc.getFiltres(context);
+    _bloc.filteredRooms.stream.listen((event) {
+      if (event != null) {
+        // TODO: Filtered rooms are fetched. How to navigate to the map_screen
+        //       with the found rooms highlighted?
+        // Navigator.of(context).push(route, arguments: event)
+      }
+    });
+    super.initState();
   }
 
   @override
@@ -42,20 +49,20 @@ class _FilterScreenState extends State<FilterScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ListView.builder(
-                padding: const EdgeInsets.all(8),
                 shrinkWrap: true,
                 itemCount: filters.length,
                 itemBuilder: (BuildContext context, int index) {
                   return FilterSelection(
-                      onChanged: () => {}, filter: filters[index]);
+                      // TODO: onChanged() should update _bloc._checkedFilters.
+                      //       But how? It could add a map with FilterID:ValueID
+                      //       or delete such map if unchecked.
+                      onChanged: () => {},
+                      filter: filters[index]);
                 }),
             AeiMapButton(
               buttonDescription: 'Find matching rooms',
               onPressed: () {
-                _bloc.changeFilters(selectedFilters);
-                // TODO: Fetch the filtered rooms. And there is a question:
-                //       what to do after the fetching of the filtered rooms?
-                // Navigator.of(context).push(route, arguments: event)
+                _bloc.getFilteredRooms(context);
               },
             )
           ],

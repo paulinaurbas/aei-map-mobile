@@ -11,9 +11,8 @@ class FilterScreenApiProvider {
     String data = await DefaultAssetBundle.of(context)
         .loadString("assets/json/filters.json");
     Map<String, dynamic> jsonMap = jsonDecode(data);
-    var filtersList = (jsonMap['filters'] as List)
-        .map((f) => new Filter.fromJson(f))
-        .toList();
+    var filtersList =
+        (jsonMap['filters'] as List).map((f) => Filter.fromJson(f)).toList();
     return filtersList;
   }
 
@@ -25,7 +24,7 @@ class FilterScreenApiProvider {
         .loadString("assets/json/filtered_rooms.json");
     Map<String, dynamic> jsonMap = jsonDecode(data);
     var filteredRoomsFromJson = jsonMap['roomIds'];
-    List<int> filteredRoomsList = new List<int>.from(filteredRoomsFromJson);
+    List<int> filteredRoomsList = List<int>.from(filteredRoomsFromJson);
     return filteredRoomsList;
   }
 }

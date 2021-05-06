@@ -16,7 +16,6 @@ class FilterSelection extends StatelessWidget {
         child: Column(children: [
       Center(child: Text('${filter.name.name}')),
       ListView.builder(
-          padding: const EdgeInsets.all(4),
           shrinkWrap: true,
           itemCount: filter.possibleValues.length,
           itemBuilder: (BuildContext context, int index) {

@@ -5,5 +5,7 @@ const Map<String, String> appStrings = {
   'pathBarIcon': 'Path',
   'startPoint': 'Start point',
   'endPoint': 'End point',
-  'findPath': 'Find path'
+  'findPath': 'Find path',
+  'nextFloor': 'Next floor!',
+  'previousFloor': 'Previous',
 };

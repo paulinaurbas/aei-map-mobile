@@ -36,28 +36,30 @@ class _FilterScreenState extends State<FilterScreen> {
   }
 
   Widget _buildFiltersWidget(List<Filter> filters) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        ListView.builder(
-            padding: const EdgeInsets.all(8),
-            shrinkWrap: true,
-            itemCount: filters.length,
-            itemBuilder: (BuildContext context, int index) {
-              return FilterSelection(
-                  onChanged: () => {}, filter: filters[index]);
-            }),
-        AeiMapButton(
-          buttonDescription: 'Find matching rooms',
-          onPressed: () {
-            _bloc.changeFilters(selectedFilters);
-            // TODO: Fetch the filtered rooms. And there is a question:
-            //       what to do after the fetching of the filtered rooms?
-            // Navigator.of(context).push(route, arguments: event)
-          },
-        )
-      ],
-    );
+    return SingleChildScrollView(
+        physics: ScrollPhysics(),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ListView.builder(
+                padding: const EdgeInsets.all(8),
+                shrinkWrap: true,
+                itemCount: filters.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return FilterSelection(
+                      onChanged: () => {}, filter: filters[index]);
+                }),
+            AeiMapButton(
+              buttonDescription: 'Find matching rooms',
+              onPressed: () {
+                _bloc.changeFilters(selectedFilters);
+                // TODO: Fetch the filtered rooms. And there is a question:
+                //       what to do after the fetching of the filtered rooms?
+                // Navigator.of(context).push(route, arguments: event)
+              },
+            )
+          ],
+        ));
   }
 
   Widget _buildLoadingWidget() {

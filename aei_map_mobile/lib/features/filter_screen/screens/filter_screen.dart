@@ -16,7 +16,7 @@ class _FilterScreenState extends State<FilterScreen> {
   @override
   void initState() {
     super.initState();
-    _bloc.getFiltres();
+    _bloc.getFiltres(context);
   }
 
   @override

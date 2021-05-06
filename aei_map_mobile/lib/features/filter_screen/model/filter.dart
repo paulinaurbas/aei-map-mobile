@@ -10,6 +10,8 @@ class Filter {
   Filter(this.name, this.possibleValues);
 
   Filter.fromJson(Map<String, dynamic> json)
-      : name = json["name"],
-        possibleValues = json["possibleValues"];
+      : name = StringId.fromJson(json["name"] as Map<String, dynamic>),
+        possibleValues = (json["possibleValues"] as List<dynamic>)
+            .map((e) => StringId.fromJson(e as Map<String, dynamic>))
+            .toList();
 }

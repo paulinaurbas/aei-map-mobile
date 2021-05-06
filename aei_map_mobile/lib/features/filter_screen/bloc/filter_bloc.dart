@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rxdart/subjects.dart';
+import 'package:flutter/widgets.dart';
 import 'package:aei_map_mobile/features/filter_screen/repository/filter_screen_repository.dart';
 import 'package:aei_map_mobile/features/filter_screen/model/filter.dart';
 
@@ -15,13 +16,15 @@ class FilterBloc extends BlocProvider {
 
   Function(List<Filter>) get changeFilters => _checkedFilters.sink.add;
 
-  getFiltres() async {
-    _repository.getFilters().then((filters) => _filters.sink.add(filters));
+  getFiltres(BuildContext context) async {
+    _repository
+        .getFilters(context)
+        .then((filters) => _filters.sink.add(filters));
   }
 
-  getFilteredRooms() async {
+  getFilteredRooms(BuildContext context) async {
     _repository
-        .getFilteredRooms(_checkedFilters.valueWrapper.value)
+        .getFilteredRooms(context, _checkedFilters.valueWrapper.value)
         .then((filteredRooms) => _filteredRooms.sink.add(filteredRooms));
   }
 

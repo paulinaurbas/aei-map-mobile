@@ -233,7 +233,7 @@ components:
         roomIds:
           type: 'array'
           items:
-            type: 'string'
+            type: 'integer'
     PathRequest:
       type: 'object'
       properties:

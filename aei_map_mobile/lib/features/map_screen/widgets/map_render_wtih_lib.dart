@@ -40,29 +40,51 @@ class RenderMap extends CustomPainter {
       ..color = appColors['way_color']
       ..strokeWidth = 2.0;
 
-    for(final element in _pathModel){
+    for(final element in _pathModel) {
       path_1.moveTo(element.path.first.x * scaleX, element.path.first.y * scaleY);
-      for(final node in element.path){
+      for(final node in element.path) {
         path_1.lineTo(node.x * scaleX, node.y * scaleY);
         path_1.moveTo(node.x * scaleX, node.y * scaleY);
       }
     }
     path_1.close();
-
+double avHeigh= 0;
+double avwei =0;
     canvas.drawPath(path_0, paint);
     canvas.drawPath(path_1, paintLine);
+    for(final element in _roomModel) {
+      for(final node in element.listOfNodes){
+        avHeigh += node.y;
+        avwei +=node.x;
+      }
+      avHeigh = avHeigh/ element.listOfNodes.length;
+      avwei = avwei/element.listOfNodes.length;
+      for (int i = 0; i < element.room.length; i++) {
+        _paintText(canvas, Size(avwei * scaleY, avHeigh * scaleX));
+      }
+      avHeigh = 0;
+      avwei = 0;
+    }
   }
 
-  void _drawLetter(Canvas canvas, String letter, x, y) {
-    _textPainter.text = TextSpan(text: letter,);
-    _textPainter.layout(
-      minWidth: 0,
-      maxWidth: double.maxFinite,
+  void _paintText(Canvas canvas, Size size) {
+    final textSpan = TextSpan(
+      text: 'n/a',
+      style: TextStyle(color: Colors.black)
     );
-    final double d = _textPainter.width;
-
-    _textPainter.paint(canvas, Offset(x, y));
-    canvas.translate(d, 0);
+    final textPainter = TextPainter(
+      text: textSpan,
+      textDirection: TextDirection.ltr,
+    );
+    textPainter.layout();
+    textPainter.paint(
+      canvas,
+      Offset(
+        // Do calculations here:
+        (size.width - textPainter.width * 0.5 ) ,
+        (size.height - textPainter.height * 0.5)
+      ),
+    );
   }
 
   @override

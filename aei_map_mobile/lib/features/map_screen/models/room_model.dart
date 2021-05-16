@@ -8,7 +8,7 @@ class RoomModel {
   List <Node> listOfNodes;
 
   RoomModel.fromJson(Map<dynamic, dynamic> json)
-      :  room = json["room"],
+      :  room = json["name"],
         floorId = json["floor_id"],
         listOfNodes=  (json['points'] as List<dynamic>)
             .map((e) => Node.fromJson(e as Map<String, dynamic>))

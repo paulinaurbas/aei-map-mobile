@@ -9,6 +9,7 @@ class PathBloc extends BlocProvider {
   final BehaviorSubject<String> _startPointRoomNumber = BehaviorSubject<String>();
   final BehaviorSubject<String> _endPointFloor = BehaviorSubject<String>();
   final BehaviorSubject<String> _endPointRoomNumber = BehaviorSubject<String>();
+  final BehaviorSubject<String> _answerFromBackend = BehaviorSubject<String>();
 
   Function(String) get changeStartPointFloor => _startPointFloor.sink.add;
 
@@ -29,5 +30,6 @@ class PathBloc extends BlocProvider {
     _startPointRoomNumber.close();
     _endPointFloor.close();
     _endPointRoomNumber.close();
+    _answerFromBackend.close();
   }
 }

@@ -10,67 +10,76 @@ class RenderMap extends CustomPainter {
   final List<RoomModel> _roomModel;
   final List<PathModel> _pathModel;
   final Size absoluteImageSize;
-
-  final _textPainter = TextPainter(textDirection: TextDirection.ltr);
+  double avgHeight = 0;
+  double avgWeight = 0;
 
   @override
   void paint(Canvas canvas, Size size) {
     final double scaleX = size.width / absoluteImageSize.width;
     final double scaleY = size.height / absoluteImageSize.height;
 
-    final Paint paint = Paint();
-    paint.color = appColors['primary_app_color'];
+    final Paint roomsPainter = Paint();
+    roomsPainter.color = appColors['primary_app_color'];
 
-    Path path_0 = Path();
+    Path drawRoomsOnMap = Path();
+    _drawRooms(drawRoomsOnMap, scaleX, scaleY);
 
-    for(final element in _roomModel){
-      path_0.moveTo(element.listOfNodes.first.x * scaleX, element.listOfNodes.first.y * scaleY);
-      for(final node in element.listOfNodes){
-        path_0.lineTo(node.x * scaleX, node.y * scaleY);
-        //path_0.moveTo(node.x * scaleX, node.y * scaleY);
-      }
-      path_0.lineTo(element.listOfNodes.first.x * scaleX, element.listOfNodes.first.y* scaleY);
-    }
-
-    path_0.close();
-
-    Path path_1 = Path();
-    final Paint paintLine = Paint()
+    Path pathToRoom = Path();
+    final Paint pathLine = Paint()
       ..style = PaintingStyle.stroke
       ..color = appColors['way_color']
       ..strokeWidth = 2.0;
 
-    for(final element in _pathModel) {
-      path_1.moveTo(element.path.first.x * scaleX, element.path.first.y * scaleY);
-      for(final node in element.path) {
-        path_1.lineTo(node.x * scaleX, node.y * scaleY);
-        path_1.moveTo(node.x * scaleX, node.y * scaleY);
+    if (_pathModel != null)_drawPathToRoom(pathToRoom, scaleX, scaleY);
+    canvas.drawPath(drawRoomsOnMap, roomsPainter);
+    if (_pathModel != null) canvas.drawPath(pathToRoom, pathLine);
+    _drawRoomsNumber(canvas, scaleX, scaleY);
+  }
+
+
+  void _drawRooms(Path drawRoomsOnMap, double scaleX, double scaleY){
+    for(final element in _roomModel){
+      drawRoomsOnMap.moveTo(element.listOfNodes.first.x * scaleX, element.listOfNodes.first.y * scaleY);
+      for(final node in element.listOfNodes){
+        drawRoomsOnMap.lineTo(node.x * scaleX, node.y * scaleY);
       }
+      drawRoomsOnMap.lineTo(element.listOfNodes.first.x * scaleX, element.listOfNodes.first.y* scaleY);
     }
-    path_1.close();
-double avHeigh= 0;
-double avwei =0;
-    canvas.drawPath(path_0, paint);
-    canvas.drawPath(path_1, paintLine);
+    drawRoomsOnMap.close();
+  }
+
+  void _drawRoomsNumber(Canvas canvas, double scaleX, double scaleY){
     for(final element in _roomModel) {
       for(final node in element.listOfNodes){
-        avHeigh += node.y;
-        avwei +=node.x;
+        avgHeight += node.y;
+        avgWeight +=node.x;
       }
-      avHeigh = avHeigh/ element.listOfNodes.length;
-      avwei = avwei/element.listOfNodes.length;
+      avgHeight = avgHeight/ element.listOfNodes.length;
+      avgWeight = avgWeight/element.listOfNodes.length;
       for (int i = 0; i < element.room.length; i++) {
-        _paintText(canvas, Size(avwei * scaleY, avHeigh * scaleX));
+        _paintText(canvas, Size(avgWeight * scaleY, avgHeight * scaleX), element.room);
       }
-      avHeigh = 0;
-      avwei = 0;
+      avgHeight = 0;
+      avgWeight = 0;
     }
   }
 
-  void _paintText(Canvas canvas, Size size) {
+  void _drawPathToRoom(Path path, double scaleX, double scaleY) {
+    for(final element in _pathModel) {
+      path.moveTo(element.path.first.x * scaleX, element.path.first.y * scaleY);
+      for(final node in element.path) {
+        path.lineTo(node.x * scaleX, node.y * scaleY);
+        path.moveTo(node.x * scaleX, node.y * scaleY);
+      }
+    }
+    path.close();
+  }
+
+
+  void _paintText(Canvas canvas, Size size, String roomNumber) {
     final textSpan = TextSpan(
-      text: 'n/a',
-      style: TextStyle(color: Colors.black)
+      text: roomNumber,
+      style: TextStyle(color: Colors.black, fontSize: 12)
     );
     final textPainter = TextPainter(
       text: textSpan,
@@ -80,7 +89,6 @@ double avwei =0;
     textPainter.paint(
       canvas,
       Offset(
-        // Do calculations here:
         (size.width - textPainter.width * 0.5 ) ,
         (size.height - textPainter.height * 0.5)
       ),

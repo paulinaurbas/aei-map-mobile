@@ -22,6 +22,7 @@ class PathScreen extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(10.0),
           child: AeiMapButton(buttonDescription: appStrings['findPath'], onPressed: (){
+            Navigator.pushNamed(context, '/MapScreenWithPath');
             _pathBloc.findPathBetweenPoints();
           },),
         ),

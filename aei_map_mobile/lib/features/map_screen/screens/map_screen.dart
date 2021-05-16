@@ -13,6 +13,9 @@ import 'dart:async';
 import 'package:aei_map_mobile/features/map_screen/widgets/map_render_wtih_lib.dart';
 
 class MapScreen extends StatefulWidget {
+  final bool isScreenWithPath;
+
+  const MapScreen({Key key, this.isScreenWithPath}) : super(key: key);
   @override
   _MapScreenState createState() => _MapScreenState();
 }
@@ -53,16 +56,17 @@ class _MapScreenState extends State<MapScreen> {
     _initializeVision();
     _mapBloc.getFloorsId(context);
     _mapBloc.getPathsList(context, floorNumber);
-    _mapBloc.pathList.stream.listen((event) {
-      if(event != null){
-        _paths = event;
-        _pathForFloor = _mapBloc.filter(_paths.path, floorNumber.toString());
-        setState(() {
-          liftToFloor = _mapBloc.getFloorToUseLift(_paths);
-        });
-      }
-    });
-
+    if (widget.isScreenWithPath == true) {
+      _mapBloc.pathList.stream.listen((event) {
+        if (event != null) {
+          _paths = event;
+          _pathForFloor = _mapBloc.filter(_paths.path, floorNumber.toString());
+          setState(() {
+            liftToFloor = _mapBloc.getFloorToUseLift(_paths);
+          });
+        }
+      });
+    }
     _mapBloc.floorList.stream.listen((event) {
       if(event != null){
         floors = event;
@@ -82,7 +86,7 @@ class _MapScreenState extends State<MapScreen> {
                 return Stack(
                   children: <Widget>[
                     _getMapTitle,
-                    _getLiftTitle,
+                    if(widget.isScreenWithPath == true) _getLiftTitle,
                     _getDrawnMap(snapshot.data.rooms),
                     if(floorNumber < floors.length) _getNextBottomButton,
                     if(floorNumber > 0) _getPrevoiusBottomButton

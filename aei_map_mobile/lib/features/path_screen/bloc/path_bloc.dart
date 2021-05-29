@@ -6,20 +6,22 @@ class PathBloc extends BlocProvider {
   final PathScreenRepository _pathScreenRepository = PathScreenRepository();
 
   final BehaviorSubject<String> _startPointFloor = BehaviorSubject<String>();
-  final BehaviorSubject<String> _startPointRoomNumber = BehaviorSubject<String>();
+  final BehaviorSubject<String> _startPointRoomNumber =
+      BehaviorSubject<String>();
   final BehaviorSubject<String> _endPointFloor = BehaviorSubject<String>();
   final BehaviorSubject<String> _endPointRoomNumber = BehaviorSubject<String>();
   final BehaviorSubject<String> _answerFromBackend = BehaviorSubject<String>();
 
   Function(String) get changeStartPointFloor => _startPointFloor.sink.add;
 
-  Function(String) get changeStartPointRoomNumber => _startPointRoomNumber.sink.add;
+  Function(String) get changeStartPointRoomNumber =>
+      _startPointRoomNumber.sink.add;
 
   Function(String) get changeEndPointFloor => _endPointFloor.sink.add;
 
   Function(String) get changeEndPointRoomNumber => _endPointRoomNumber.sink.add;
 
-  findPathBetweenPoints(){
+  findPathBetweenPoints() {
     //TODO: impelment call to backend
     return _pathScreenRepository.findPathBetweenPoints();
   }

@@ -9,9 +9,9 @@ class CustomTheme {
         scaffoldBackgroundColor: appColors['background_color'],
         textTheme: ThemeData.dark().textTheme,
         buttonTheme: ButtonThemeData(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.0)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.0)),
           buttonColor: Colors.white,
         ));
   }
-
 }

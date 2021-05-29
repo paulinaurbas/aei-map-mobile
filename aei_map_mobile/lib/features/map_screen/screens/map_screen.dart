@@ -1,16 +1,16 @@
+import 'dart:async';
+import 'dart:ui';
+
 import 'package:aei_map_mobile/features/map_screen/bloc/map_screen_bloc.dart';
 import 'package:aei_map_mobile/features/map_screen/models/all_paths.dart';
 import 'package:aei_map_mobile/features/map_screen/models/floor_model.dart';
 import 'package:aei_map_mobile/features/map_screen/models/path_model.dart';
 import 'package:aei_map_mobile/features/map_screen/models/room_model.dart';
-
+import 'package:aei_map_mobile/features/map_screen/widgets/map_render_wtih_lib.dart';
 import 'package:aei_map_mobile/styles/app_colors.dart';
 import 'package:aei_map_mobile/styles/app_strings.dart';
 import 'package:aei_map_mobile/styles/widgets/aei_map_button.dart';
 import 'package:flutter/material.dart';
-import 'dart:ui';
-import 'dart:async';
-import 'package:aei_map_mobile/features/map_screen/widgets/map_render_wtih_lib.dart';
 
 class MapScreen extends StatefulWidget {
   final bool isScreenWithPath;

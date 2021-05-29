@@ -1,6 +1,6 @@
 import 'package:aei_map_mobile/features/map_screen/models/node_model.dart';
 
-class PathModel{
+class PathModel {
   String floorId;
   List<Node> path;
 
@@ -14,5 +14,4 @@ class PathModel{
           .toList(),
     );
   }
-
 }

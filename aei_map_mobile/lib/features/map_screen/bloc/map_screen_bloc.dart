@@ -11,29 +11,36 @@ import 'package:rxdart/rxdart.dart';
 // ignore: must_be_immutable
 class MapBloc extends BlocProvider {
   final MapScreenRepository _mapScreenRepository = MapScreenRepository();
-  PublishSubject <Floor> roomList = PublishSubject();
-  BehaviorSubject <List<int>> floorList = BehaviorSubject();
-  BehaviorSubject <AllPaths> pathList = BehaviorSubject();
+  PublishSubject<Floor> roomList = PublishSubject();
+  BehaviorSubject<List<int>> floorList = BehaviorSubject();
+  BehaviorSubject<AllPaths> pathList = BehaviorSubject();
+
   //BehaviorSubject <String> liftToFloor = BehaviorSubject();
 
-  getFloorsId(BuildContext context) async => await _mapScreenRepository.getFloorsId(context).then((value) => floorList.sink.add(value));
+  getFloorsId(BuildContext context) async => await _mapScreenRepository
+      .getFloorsId(context)
+      .then((value) => floorList.sink.add(value));
 
   getRoomList(BuildContext context, int floorNumber) {
     roomList.sink.add(null);
-    return _mapScreenRepository.listWithRooms(context, floorNumber).then((value) => roomList.sink.add(value));
+    return _mapScreenRepository
+        .listWithRooms(context, floorNumber)
+        .then((value) => roomList.sink.add(value));
   }
 
-  getPathsList(BuildContext context, int floorNumber) => _mapScreenRepository.listWithPath(context, floorNumber).then((value) => pathList.sink.add(value));
+  getPathsList(BuildContext context, int floorNumber) => _mapScreenRepository
+      .listWithPath(context, floorNumber)
+      .then((value) => pathList.sink.add(value));
 
-  String getFloorToUseLift (AllPaths _paths){
-      return _paths.path.last.floorId;
+  String getFloorToUseLift(AllPaths _paths) {
+    return _paths.path.last.floorId;
   }
 
-  List<PathModel> filter (List<PathModel> paths, String title) {
+  List<PathModel> filter(List<PathModel> paths, String title) {
     return paths?.where((element) => element.floorId == title)?.toList();
   }
 
-    @override
+  @override
   void dispose() {
     roomList.close();
     floorList.close();

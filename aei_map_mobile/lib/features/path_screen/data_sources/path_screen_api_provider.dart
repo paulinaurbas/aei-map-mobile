@@ -1,7 +1,4 @@
-class PathScreenApiProvider{
-
+class PathScreenApiProvider {
   //TODO: impelment call to backend
-  findPathBetweenPoints() {
-
-  }
+  findPathBetweenPoints() {}
 }

@@ -15,28 +15,37 @@ class PathScreen extends StatelessWidget {
       children: [
         getTitleWidget(appStrings['startPoint']),
         FloorInput(onChanged: _pathBloc.changeStartPointFloor),
-        RoomNumberInput(onChanged: _pathBloc.changeStartPointRoomNumber,),
+        RoomNumberInput(
+          onChanged: _pathBloc.changeStartPointRoomNumber,
+        ),
         getTitleWidget(appStrings['endPoint']),
         FloorInput(onChanged: _pathBloc.changeEndPointFloor),
-        RoomNumberInput(onChanged: _pathBloc.changeEndPointRoomNumber,),
+        RoomNumberInput(
+          onChanged: _pathBloc.changeEndPointRoomNumber,
+        ),
         Padding(
           padding: const EdgeInsets.all(10.0),
-          child: AeiMapButton(buttonDescription: appStrings['findPath'], onPressed: (){
-            Navigator.pushNamed(context, '/MapScreenWithPath');
-            _pathBloc.findPathBetweenPoints();
-          },),
+          child: AeiMapButton(
+            buttonDescription: appStrings['findPath'],
+            onPressed: () {
+              Navigator.pushNamed(context, '/MapScreenWithPath');
+              _pathBloc.findPathBetweenPoints();
+            },
+          ),
         ),
       ],
     );
   }
 
   Widget getTitleWidget(String description) => Padding(
-    padding: const EdgeInsets.only(left: 25, right: 25, top: 12, bottom: 12),
-    child: Align(
-      alignment: Alignment.topLeft,
-      child: Text(description,
-      style: TextStyle(fontSize: 16),),
-    ),
-  );
-
+        padding:
+            const EdgeInsets.only(left: 25, right: 25, top: 12, bottom: 12),
+        child: Align(
+          alignment: Alignment.topLeft,
+          child: Text(
+            description,
+            style: TextStyle(fontSize: 16),
+          ),
+        ),
+      );
 }

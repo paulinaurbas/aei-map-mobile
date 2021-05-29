@@ -16,7 +16,13 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 0;
 
-  final List<Widget> _children = [MapScreen(isScreenWithPath: false,), FilterScreen(), PathScreen()];
+  final List<Widget> _children = [
+    MapScreen(
+      isScreenWithPath: false,
+    ),
+    FilterScreen(),
+    PathScreen()
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -24,14 +30,15 @@ class _MainScreenState extends State<MainScreen> {
       body: _children.elementAt(_currentIndex),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border (top: BorderSide(color: Colors.white, width: 1.0))
-        ),
+            color: Colors.white,
+            border: Border(top: BorderSide(color: Colors.white, width: 1.0))),
         child: BottomNavigationBar(
           backgroundColor: appColors['background_color'],
           unselectedItemColor: Colors.white,
-          onTap: onTabTapped, // new
-          currentIndex: _currentIndex, // new
+          onTap: onTabTapped,
+          // new
+          currentIndex: _currentIndex,
+          // new
           items: [
             BottomNavigationBarItem(
               icon: Icon(Icons.map),

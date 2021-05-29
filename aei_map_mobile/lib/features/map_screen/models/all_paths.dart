@@ -1,7 +1,6 @@
-import 'package:aei_map_mobile/features/map_screen/models/node_model.dart';
 import 'package:aei_map_mobile/features/map_screen/models/path_model.dart';
 
-class AllPaths{
+class AllPaths {
   List<PathModel> path;
 
   AllPaths(this.path);
@@ -13,5 +12,4 @@ class AllPaths{
           .toList(),
     );
   }
-
 }

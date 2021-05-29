@@ -17,7 +17,8 @@ class AeiMapButton extends StatelessWidget{
               style: TextStyle(fontSize: 14, color: Colors.white, letterSpacing: 0.8),),
           ),
           color: appColors['primary_app_color'],
-          onPressed: onPressed
+          onPressed: onPressed,
+          disabledColor: Colors.grey,
       );
   }
 

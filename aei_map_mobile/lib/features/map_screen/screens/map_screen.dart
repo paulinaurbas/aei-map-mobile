@@ -16,6 +16,7 @@ class MapScreen extends StatefulWidget {
   final bool isScreenWithPath;
 
   const MapScreen({Key key, this.isScreenWithPath}) : super(key: key);
+
   @override
   _MapScreenState createState() => _MapScreenState();
 }
@@ -25,10 +26,12 @@ class _MapScreenState extends State<MapScreen> {
   Size _imageSize;
   MapBloc _mapBloc = MapBloc();
   int floorNumber = 0;
-  List <int> floors;
+  List<int> floors;
   AllPaths _paths;
   List<PathModel> _pathForFloor;
   String liftToFloor;
+  bool nextButtonPressed = false;
+  bool previousButtonPressed = false;
 
   void _initializeVision() async {
     await _getImage();
@@ -49,7 +52,6 @@ class _MapScreenState extends State<MapScreen> {
     return image;
   }
 
-
   @override
   void initState() {
     super.initState();
@@ -68,10 +70,12 @@ class _MapScreenState extends State<MapScreen> {
       });
     }
     _mapBloc.floorList.stream.listen((event) {
-      if(event != null){
+      if (event != null) {
         floors = event;
         _mapBloc.getRoomList(context, event.first);
-        _pathForFloor = _mapBloc.filter(_paths.path, floorNumber.toString());
+        if (widget.isScreenWithPath == true) {
+          _pathForFloor = _mapBloc.filter(_paths?.path, floorNumber.toString());
+        }
       }
     });
   }
@@ -79,67 +83,75 @@ class _MapScreenState extends State<MapScreen> {
   @override
   Widget build(BuildContext context) {
     return _imageSize != null
-        ? StreamBuilder<Floor>(
-            stream: _mapBloc.roomList.stream,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return Stack(
-                  children: <Widget>[
-                    _getMapTitle,
-                    if(widget.isScreenWithPath == true) _getLiftTitle,
-                    _getDrawnMap(snapshot.data.rooms),
-                    if(floorNumber < floors.length) _getNextBottomButton,
-                    if(floorNumber > 0) _getPrevoiusBottomButton
-                  ],
-                );
-              } else
-                return _getIndicator;
-            })
+        ? Stack(
+            children: <Widget>[
+              _getMapTitle,
+              if (widget.isScreenWithPath == true) _getLiftTitle,
+              StreamBuilder<Floor>(
+                  stream: _mapBloc.roomList.stream,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      if (floorNumber != 0) {
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          setState(() {
+                            nextButtonPressed = false;
+                            previousButtonPressed = false;
+                          });
+                        });
+                      }
+                      return _getDrawnMap(snapshot.data.rooms);
+                    } else {
+                      return _getIndicator;
+                    }
+                  }),
+              if (floorNumber < floors.length) _getNextBottomButton,
+              if (floorNumber > 0) _getPrevoiusBottomButton
+            ],
+          )
         : _getIndicator;
   }
 
-  Widget get _getIndicator =>  Container(
-    color: Colors.black26,
-    child: Center(
-      child: CircularProgressIndicator(
-        valueColor: new AlwaysStoppedAnimation<Color>(
-            appColors['primary_app_color']),
-      ),
-    ),
-  );
+  Widget get _getIndicator => Container(
+        color: Colors.black26,
+        child: Center(
+          child: CircularProgressIndicator(
+            valueColor: new AlwaysStoppedAnimation<Color>(
+                appColors['primary_app_color']),
+          ),
+        ),
+      );
 
+  Widget get _getLiftTitle => Align(
+        alignment: Alignment.topCenter,
+        child: Padding(
+          padding: const EdgeInsets.only(top: 85.0),
+          child: Text('Take the elevator to the $liftToFloor floor',
+              style: TextStyle(fontSize: 18)),
+        ),
+      );
 
-  Widget get _getLiftTitle =>  Align(
-    alignment: Alignment.topCenter,
-    child: Padding(
-      padding: const EdgeInsets.only(top: 85.0),
-      child: Text('Take the elevator to the $liftToFloor floor', style: TextStyle(fontSize: 18)),
-    ),
-  );
-
-  Widget get _getMapTitle =>  Align(
-    alignment: Alignment.topCenter,
-    child: Padding(
-      padding: const EdgeInsets.only(top: 50.0),
-      child: Text('Floor: $floorNumber', style: TextStyle(fontSize: 23)),
-    ),
-  );
+  Widget get _getMapTitle => Align(
+        alignment: Alignment.topCenter,
+        child: Padding(
+          padding: const EdgeInsets.only(top: 50.0),
+          child: Text('Floor: $floorNumber', style: TextStyle(fontSize: 23)),
+        ),
+      );
 
   Widget _getDrawnMap(List<RoomModel> listWithRooms) => Center(
-    child: Container(
-      width: double.maxFinite,
-      color: Colors.black,
-      child: CustomPaint(
-        foregroundPainter: RenderMap(_imageSize,
-            MediaQuery.of(context).size, listWithRooms, _pathForFloor),
-        child: AspectRatio(
-          aspectRatio: _imageSize.aspectRatio,
-          child: image,
+        child: Container(
+          width: double.maxFinite,
+          color: Colors.black,
+          child: CustomPaint(
+            foregroundPainter: RenderMap(_imageSize,
+                MediaQuery.of(context).size, listWithRooms, _pathForFloor),
+            child: AspectRatio(
+              aspectRatio: _imageSize.aspectRatio,
+              child: image,
+            ),
+          ),
         ),
-      ),
-    ),
-  );
-
+      );
 
   Widget get _getNextBottomButton {
     return Align(
@@ -148,33 +160,42 @@ class _MapScreenState extends State<MapScreen> {
         padding: const EdgeInsets.only(bottom: 40.0, right: 20),
         child: AeiMapButton(
           buttonDescription: appStrings['nextFloor'],
-          onPressed: () {
-            setState(() {
-              floorNumber++;
-            });
-            _mapBloc.getRoomList(context, floorNumber);
-            _pathForFloor = _mapBloc.filter(_paths?.path, floorNumber.toString());
-          },
+          onPressed: !nextButtonPressed
+              ? () {
+                  setState(() {
+                    nextButtonPressed = true;
+                    floorNumber++;
+                  });
+                  _mapBloc.getRoomList(context, floorNumber);
+                  if (widget.isScreenWithPath)
+                    _pathForFloor =
+                        _mapBloc.filter(_paths?.path, floorNumber.toString());
+                }
+              : null,
         ),
       ),
     );
   }
 
   Widget get _getPrevoiusBottomButton => Align(
-    alignment: Alignment.bottomLeft,
-    child: Padding(
-      padding: const EdgeInsets.only(bottom: 40.0, left: 20),
-      child: AeiMapButton(
-        buttonDescription: appStrings['previousFloor'],
-        onPressed: () {
-          setState(() {
-            floorNumber--;
-          });
-          _mapBloc.getRoomList(context, floorNumber);
-          _pathForFloor = _mapBloc.filter(_paths.path, floorNumber.toString());
-        },
-      ),
-    ),
-  );
-
+        alignment: Alignment.bottomLeft,
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 40.0, left: 20),
+          child: AeiMapButton(
+            buttonDescription: appStrings['previousFloor'],
+            onPressed: !previousButtonPressed
+                ? () {
+                    setState(() {
+                      previousButtonPressed = true;
+                      floorNumber--;
+                    });
+                    _mapBloc.getRoomList(context, floorNumber);
+                    if (widget.isScreenWithPath)
+                      _pathForFloor =
+                          _mapBloc.filter(_paths.path, floorNumber.toString());
+                  }
+                : null,
+          ),
+        ),
+      );
 }

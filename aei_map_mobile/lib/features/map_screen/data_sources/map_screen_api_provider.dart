@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:aei_map_mobile/features/map_screen/models/all_paths.dart';
 import 'package:aei_map_mobile/features/map_screen/models/floor_model.dart';
-import 'package:aei_map_mobile/features/map_screen/models/path_model.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -9,8 +8,8 @@ class MapApiProvider {
   final client = Dio();
 
   Future <Floor> drawMapFromCoordinates(BuildContext context, int floorNumber) async {
-  return client.get('https://aeimap.azurewebsites.net/api/Floor/1').then((value) {
-      return Floor.fromJson(value.data);
+  return client.get('https://aeimap.azurewebsites.net/api/Floor/$floorNumber').then((value) {
+        return Floor.fromJson(value.data);
     });
   }
 

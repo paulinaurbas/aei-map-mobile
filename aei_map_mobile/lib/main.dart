@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'AEI map',
       initialRoute: '/',
       routes: customRoutes,
       theme: CustomTheme.lightTheme,

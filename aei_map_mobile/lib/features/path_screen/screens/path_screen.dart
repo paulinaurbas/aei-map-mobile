@@ -1,40 +1,74 @@
 import 'package:aei_map_mobile/features/path_screen/bloc/path_bloc.dart';
-import 'package:aei_map_mobile/features/path_screen/widgets/floor_input.dart';
 import 'package:aei_map_mobile/features/path_screen/widgets/room_number_input.dart';
 import 'package:aei_map_mobile/styles/app_strings.dart';
 import 'package:aei_map_mobile/styles/widgets/aei_map_button.dart';
+import 'package:aei_map_mobile/styles/widgets/progress_indicator.dart';
 import 'package:flutter/material.dart';
 
-class PathScreen extends StatelessWidget {
+class PathScreen extends StatefulWidget {
+  @override
+  _PathScreenState createState() => _PathScreenState();
+}
+
+class _PathScreenState extends State<PathScreen> {
   final PathBloc _pathBloc = PathBloc();
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        getTitleWidget(appStrings['startPoint']),
-        FloorInput(onChanged: _pathBloc.changeStartPointFloor),
-        RoomNumberInput(
-          onChanged: _pathBloc.changeStartPointRoomNumber,
+    return Container(
+      height: double.infinity,
+      width: double.infinity,
+      child: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        onPanDown: (_) => FocusScope.of(context).unfocus(),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Visibility(
+              child: getIndicator,
+              maintainSize: true,
+              maintainAnimation: true,
+              maintainState: true,
+              visible: isLoading,
+            ),
+            getTitleWidget(appStrings['startPoint']),
+            RoomNumberInput(
+              onChanged: _pathBloc.changeStartPointRoomNumber,
+            ),
+            getTitleWidget(appStrings['endPoint']),
+            RoomNumberInput(
+              onChanged: _pathBloc.changeEndPointRoomNumber,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: AeiMapButton(
+                buttonDescription: appStrings['findPath'],
+                onPressed: () {
+                  setState(() {
+                    isLoading = true;
+                  });
+                  FocusScope.of(context).unfocus();
+                  _pathBloc.findPathBetweenPoints();
+                },
+              ),
+            ),
+          ],
         ),
-        getTitleWidget(appStrings['endPoint']),
-        FloorInput(onChanged: _pathBloc.changeEndPointFloor),
-        RoomNumberInput(
-          onChanged: _pathBloc.changeEndPointRoomNumber,
-        ),
-        Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: AeiMapButton(
-            buttonDescription: appStrings['findPath'],
-            onPressed: () {
-              Navigator.pushNamed(context, '/MapScreenWithPath');
-              _pathBloc.findPathBetweenPoints();
-            },
-          ),
-        ),
-      ],
+      ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _pathBloc.answerFromBackend.listen((value) {
+      Navigator.pushNamed(context, '/MapScreenWithPath', arguments: value);
+      setState(() {
+        isLoading = false;
+      });
+    });
+
   }
 
   Widget getTitleWidget(String description) => Padding(

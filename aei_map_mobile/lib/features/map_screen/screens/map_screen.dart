@@ -10,12 +10,13 @@ import 'package:aei_map_mobile/features/map_screen/widgets/map_render_wtih_lib.d
 import 'package:aei_map_mobile/styles/app_colors.dart';
 import 'package:aei_map_mobile/styles/app_strings.dart';
 import 'package:aei_map_mobile/styles/widgets/aei_map_button.dart';
+import 'package:aei_map_mobile/styles/widgets/progress_indicator.dart';
 import 'package:flutter/material.dart';
 
 class MapScreen extends StatefulWidget {
   final bool isScreenWithPath;
-
-  const MapScreen({Key key, this.isScreenWithPath}) : super(key: key);
+  AllPaths paths;
+  MapScreen({Key key, this.isScreenWithPath, this.paths}) : super(key: key);
 
   @override
   _MapScreenState createState() => _MapScreenState();
@@ -55,26 +56,22 @@ class _MapScreenState extends State<MapScreen> {
   @override
   void initState() {
     super.initState();
+    floors = [];
+    _paths = widget.paths;
     _initializeVision();
     _mapBloc.getFloorsId(context);
     _mapBloc.getPathsList(context, floorNumber);
     if (widget.isScreenWithPath == true) {
-      _mapBloc.pathList.stream.listen((event) {
-        if (event != null) {
-          _paths = event;
-          _pathForFloor = _mapBloc.filter(_paths.path, floorNumber.toString());
-          setState(() {
-            liftToFloor = _mapBloc.getFloorToUseLift(_paths);
-          });
-        }
-      });
+      liftToFloor = _mapBloc.getFloorToUseLift(_paths);
     }
     _mapBloc.floorList.stream.listen((event) {
       if (event != null) {
-        floors = event;
+        setState(() {
+          floors = event;
+        });
         _mapBloc.getRoomList(context, event.first);
         if (widget.isScreenWithPath == true) {
-          _pathForFloor = _mapBloc.filter(_paths?.path, floorNumber.toString());
+          _pathForFloor = _mapBloc.filter(widget.paths.path, floorNumber);
         }
       }
     });
@@ -101,25 +98,16 @@ class _MapScreenState extends State<MapScreen> {
                       }
                       return _getDrawnMap(snapshot.data.rooms);
                     } else {
-                      return _getIndicator;
+                      return getIndicator;
                     }
                   }),
-              if (floorNumber < floors.length) _getNextBottomButton,
+              if (floorNumber < (floors.length ?? 0)) _getNextBottomButton,
               if (floorNumber > 0) _getPrevoiusBottomButton
             ],
           )
-        : _getIndicator;
+        : getIndicator;
   }
 
-  Widget get _getIndicator => Container(
-        color: Colors.black26,
-        child: Center(
-          child: CircularProgressIndicator(
-            valueColor: new AlwaysStoppedAnimation<Color>(
-                appColors['primary_app_color']),
-          ),
-        ),
-      );
 
   Widget get _getLiftTitle => Align(
         alignment: Alignment.topCenter,
@@ -166,10 +154,10 @@ class _MapScreenState extends State<MapScreen> {
                     nextButtonPressed = true;
                     floorNumber++;
                   });
-                  _mapBloc.getRoomList(context, floorNumber);
                   if (widget.isScreenWithPath)
                     _pathForFloor =
-                        _mapBloc.filter(_paths?.path, floorNumber.toString());
+                        _mapBloc.filter(_paths?.path, floorNumber);
+                  _mapBloc.getRoomList(context, floorNumber);
                 }
               : null,
         ),
@@ -192,7 +180,7 @@ class _MapScreenState extends State<MapScreen> {
                     _mapBloc.getRoomList(context, floorNumber);
                     if (widget.isScreenWithPath)
                       _pathForFloor =
-                          _mapBloc.filter(_paths.path, floorNumber.toString());
+                          _mapBloc.filter(_paths.path, floorNumber);
                   }
                 : null,
           ),

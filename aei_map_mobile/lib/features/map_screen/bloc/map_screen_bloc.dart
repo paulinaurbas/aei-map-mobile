@@ -15,8 +15,6 @@ class MapBloc extends BlocProvider {
   BehaviorSubject<List<int>> floorList = BehaviorSubject();
   BehaviorSubject<AllPaths> pathList = BehaviorSubject();
 
-  //BehaviorSubject <String> liftToFloor = BehaviorSubject();
-
   getFloorsId(BuildContext context) async => await _mapScreenRepository
       .getFloorsId(context)
       .then((value) => floorList.sink.add(value));
@@ -33,10 +31,10 @@ class MapBloc extends BlocProvider {
       .then((value) => pathList.sink.add(value));
 
   String getFloorToUseLift(AllPaths _paths) {
-    return _paths.path.last.floorId;
+    return _paths.path.last.floorId.toString();
   }
 
-  List<PathModel> filter(List<PathModel> paths, String title) {
+  List<PathModel> filter(List<PathModel> paths, int title) {
     return paths?.where((element) => element.floorId == title)?.toList();
   }
 
@@ -45,6 +43,5 @@ class MapBloc extends BlocProvider {
     roomList.close();
     floorList.close();
     pathList.close();
-    //liftToFloor.close();
   }
 }

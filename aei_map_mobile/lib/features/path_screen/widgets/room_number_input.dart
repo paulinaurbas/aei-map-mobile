@@ -19,6 +19,7 @@ class RoomNumberInput extends StatelessWidget {
             border: Border.all(color: Colors.white),
             borderRadius: BorderRadius.circular(30)),
         child: TextFormField(
+          style: TextStyle(color: Colors.black),
           decoration: const InputDecoration(
               focusedBorder: InputBorder.none,
               enabledBorder: InputBorder.none,

@@ -7,7 +7,7 @@ class AllPaths {
 
   AllPaths.fromJson(Map<String, dynamic> json) {
     AllPaths(
-      path = (json['paths'] as List<dynamic>)
+      path = (json['floorPaths'] as List<dynamic>)
           .map((e) => PathModel.fromJson(e as Map<String, dynamic>))
           .toList(),
     );

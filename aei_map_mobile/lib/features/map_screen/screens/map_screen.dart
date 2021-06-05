@@ -57,11 +57,10 @@ class _MapScreenState extends State<MapScreen> {
   void initState() {
     super.initState();
     floors = [];
-    _paths = widget.paths;
     _initializeVision();
     _mapBloc.getFloorsId(context);
-    _mapBloc.getPathsList(context, floorNumber);
     if (widget.isScreenWithPath == true) {
+      _paths = widget.paths;
       liftToFloor = _mapBloc.getFloorToUseLift(_paths);
     }
     _mapBloc.floorList.stream.listen((event) {

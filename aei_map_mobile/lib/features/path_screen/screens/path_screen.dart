@@ -15,6 +15,12 @@ class _PathScreenState extends State<PathScreen> {
   bool isLoading = false;
 
   @override
+  void dispose() {
+    _pathBloc.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
       height: double.infinity,
@@ -34,23 +40,25 @@ class _PathScreenState extends State<PathScreen> {
             ),
             getTitleWidget(appStrings['startPoint']),
             RoomNumberInput(
+              controller: _pathBloc.inputStartPointController,
               onChanged: _pathBloc.changeStartPointRoomNumber,
             ),
             getTitleWidget(appStrings['endPoint']),
             RoomNumberInput(
+              controller: _pathBloc.inputEndPointController,
               onChanged: _pathBloc.changeEndPointRoomNumber,
             ),
             Padding(
               padding: const EdgeInsets.all(10.0),
               child: AeiMapButton(
                 buttonDescription: appStrings['findPath'],
-                onPressed: () {
+                onPressed: _pathBloc.inputStartPointController.value.text.isNotEmpty && _pathBloc.inputEndPointController.value.text.isNotEmpty ? () {
                   setState(() {
                     isLoading = true;
                   });
                   FocusScope.of(context).unfocus();
                   _pathBloc.findPathBetweenPoints();
-                },
+                } : null,
               ),
             ),
           ],

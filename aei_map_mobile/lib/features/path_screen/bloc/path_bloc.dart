@@ -1,6 +1,6 @@
 import 'package:aei_map_mobile/features/map_screen/models/all_paths.dart';
-import 'package:aei_map_mobile/features/map_screen/models/floor_model.dart';
 import 'package:aei_map_mobile/features/path_screen/repository/path_screen_repository.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -11,6 +11,8 @@ class PathBloc extends BlocProvider {
       BehaviorSubject<String>();
   final BehaviorSubject<String> _endPointRoomNumber = BehaviorSubject<String>();
   final BehaviorSubject<AllPaths> answerFromBackend = BehaviorSubject<AllPaths>();
+  final TextEditingController inputStartPointController = TextEditingController();
+  final TextEditingController inputEndPointController = TextEditingController();
 
   Function(String) get changeStartPointRoomNumber =>
       _startPointRoomNumber.sink.add;
@@ -24,8 +26,9 @@ class PathBloc extends BlocProvider {
         .then((value) => answerFromBackend.add(value));
   }
 
-  @override
   void dispose() {
+    inputEndPointController.dispose();
+    inputEndPointController.dispose();
     _startPointRoomNumber.close();
     _endPointRoomNumber.close();
     answerFromBackend.close();

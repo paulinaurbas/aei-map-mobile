@@ -26,6 +26,7 @@ class _MapScreenState extends State<MapScreen> {
   Image image;
   Size _imageSize;
   MapBloc _mapBloc = MapBloc();
+  int theLowestFloorInBuilding = 0;
   int floorNumber = 0;
   List<int> floors;
   AllPaths _paths;
@@ -69,6 +70,8 @@ class _MapScreenState extends State<MapScreen> {
           floors = event;
         });
         _mapBloc.getRoomList(context, event.first);
+        floorNumber = event.first;
+        theLowestFloorInBuilding = event.first;
         if (widget.isScreenWithPath == true) {
           _pathForFloor = _mapBloc.filter(widget.paths.path, floorNumber);
         }
@@ -101,7 +104,7 @@ class _MapScreenState extends State<MapScreen> {
                     }
                   }),
               if (floorNumber < (floors.length ?? 0)) _getNextBottomButton,
-              if (floorNumber > 0) _getPrevoiusBottomButton
+              if (floorNumber > theLowestFloorInBuilding) _getPrevoiusBottomButton
             ],
           )
         : getIndicator;

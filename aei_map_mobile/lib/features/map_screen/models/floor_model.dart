@@ -1,6 +1,6 @@
 import 'room_model.dart';
 
-class Floor{
+class Floor {
   int id;
   int number;
   List<RoomModel> rooms;
@@ -21,11 +21,9 @@ class Floor{
   }
 
   Map<String, dynamic> floorToJson(Floor instance) => <String, dynamic>{
-    'id': instance.id,
-    'number': instance.number,
-    'rooms': instance.rooms,
-    'path': instance.path,
-  };
-
-
+        'id': instance.id,
+        'number': instance.number,
+        'rooms': instance.rooms,
+        'path': instance.path,
+      };
 }

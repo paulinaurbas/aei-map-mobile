@@ -1,3 +1,4 @@
+import 'package:aei_map_mobile/routes.dart';
 import 'package:aei_map_mobile/styles/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,7 +14,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'AEI map',
+      initialRoute: '/',
+      routes: customRoutes,
       theme: CustomTheme.lightTheme,
       debugShowCheckedModeBanner: false,
       home: MainScreen(),

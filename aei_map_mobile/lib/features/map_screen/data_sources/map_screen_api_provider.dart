@@ -1,21 +1,24 @@
 import 'dart:convert';
 import 'package:aei_map_mobile/features/map_screen/models/floor_model.dart';
-import 'package:aei_map_mobile/features/map_screen/models/room_model.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 
 class MapApiProvider {
   final client = Dio();
 
-  Future <Floor> drawMapFromCoordinates(BuildContext context, int floorNumber) async {
-  return client.get('https://aeimap.azurewebsites.net/api/Floor/1').then((value) {
+  Future<Floor> drawMapFromCoordinates(
+      BuildContext context, int floorNumber) async {
+    return client
+        .get('https://aeimap.azurewebsites.net/api/Floor/$floorNumber')
+        .then((value) {
       return Floor.fromJson(value.data);
     });
   }
 
-  Future<List<int>> getFloorsId(BuildContext context) async {
-    String data = await DefaultAssetBundle.of(context).loadString("assets/json/floors.json");
 
+  Future<List<int>> getFloorsId(BuildContext context) async {
+    String data = await DefaultAssetBundle.of(context)
+        .loadString("assets/json/floors.json");
 
     Map<String, dynamic> jsonMap = jsonDecode(data);
     var genreIdsFromJson = jsonMap['floors_ids'];

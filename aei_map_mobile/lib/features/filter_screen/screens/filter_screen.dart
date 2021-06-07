@@ -12,6 +12,8 @@ class FilterScreen extends StatefulWidget {
 class _FilterScreenState extends State<FilterScreen> {
   final FilterBloc _bloc = FilterBloc();
   List<Filter> selectedFilters;
+  var checkedFilters = new Set();
+  var checkedFilters2 = new Map();
 
   @override
   void initState() {
@@ -43,6 +45,10 @@ class _FilterScreenState extends State<FilterScreen> {
   }
 
   Widget _buildFiltersWidget(List<Filter> filters) {
+    for (var filter in filters) {
+      checkedFilters2[filter.name.id] = [];
+    }
+
     return SingleChildScrollView(
         physics: ScrollPhysics(),
         child: Column(
@@ -56,7 +62,14 @@ class _FilterScreenState extends State<FilterScreen> {
                       // TODO: onChanged() should update _bloc._checkedFilters.
                       //       But how? It could add a map with FilterID:ValueID
                       //       or delete such map if unchecked.
-                      onChanged: () => {},
+                      onChanged: (filterValue) => {
+                        // final checkedValues = checkedFilters2[filters[index].name.id];
+
+                        // TODO: robie mape z id filtrow na array z id valuesow checkowanych i je dodaje, albo usuwam, jak juz sa (czyli sa odcheckowane)
+                        var s = checkedFilters2[filters[index].name.id];
+                        // _bloc.checkFilterValue(
+                        //   filters[index].name.id, filterValue)
+                        },
                       filter: filters[index]);
                 }),
             AeiMapButton(

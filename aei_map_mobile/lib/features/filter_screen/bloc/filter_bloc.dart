@@ -15,7 +15,22 @@ class FilterBloc extends BlocProvider {
   BehaviorSubject<List<Filter>> get filters => _filters;
   BehaviorSubject<List<int>> get filteredRooms => _filteredRooms;
 
-  Function(Map<int, List<int>>) get changeFilters => _checkedFilters.sink.add;
+  initializeCheckedFilters(List<int> filterIds) {
+    Map<int, List<int>> emptyCheckedFilters = {};
+    for (var filterId in filterIds) emptyCheckedFilters[filterId] = [];
+    _checkedFilters.sink.add(emptyCheckedFilters);
+    print(emptyCheckedFilters.toString());
+  }
+
+  changeCheckedFilters(int filterId, int valueId) {
+    final checkedFilters =
+        Map<int, List<int>>.from(_checkedFilters.valueWrapper.value);
+    if (checkedFilters[filterId].contains(valueId))
+      checkedFilters[filterId].remove(valueId);
+    else
+      checkedFilters[filterId].add(valueId);
+    _checkedFilters.sink.add(checkedFilters);
+  }
 
   getFiltres(BuildContext context) async {
     _repository

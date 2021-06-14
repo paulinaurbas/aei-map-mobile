@@ -9,18 +9,14 @@ class FilterScreenApiProvider {
   final client = Dio();
 
   Future<List<Filter>> getFilters(BuildContext context) async {
-    // TODO: Get the real data. It's just a mock one
-    // await Future.delayed(const Duration(seconds: 1));
-    // String data = await DefaultAssetBundle.of(context)
-    //     .loadString("assets/json/filters.json");
-    // Map<String, dynamic> jsonMap = jsonDecode(data);
-    // var filtersList =
-    //     (jsonMap['filters'] as List).map((f) => Filter.fromJson(f)).toList();
-    // return filtersList;
-
-    var response =
+    final response =
         await client.get('https://aeimap.azurewebsites.net/api/Filter');
-    return (response.data as List).map((f) => Filter.fromJson(f)).toList();
+    if (response.statusCode == 200)
+      return (response.data as List).map((f) => Filter.fromJson(f)).toList();
+    else {
+      print('${response.statusCode} : ${response.data.toString()}');
+      throw response.statusCode;
+    }
   }
 
   Future<List<int>> getFilteredRooms(
@@ -34,5 +30,16 @@ class FilterScreenApiProvider {
     var filteredRoomsFromJson = jsonMap['roomIds'];
     List<int> filteredRoomsList = List<int>.from(filteredRoomsFromJson);
     return filteredRoomsList;
+    print(jsonEncode(checkedFilters.values.toList()));
+
+    // final response = await client.post(
+    //     'https://aeimap.azurewebsites.net/api/FilteredRoom',
+    //     data: {'filterIds': jsonEncode(checkedFilters.values.toList())});
+    // if (response.statusCode == 200)
+    //   return response.data as List;
+    // else {
+    //   print('${response.statusCode} : ${response.data.toString()}');
+    //   throw response.statusCode;
+    // }
   }
 }

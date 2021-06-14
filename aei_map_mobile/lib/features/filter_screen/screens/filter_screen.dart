@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:aei_map_mobile/features/filter_screen/bloc/filter_bloc.dart';
 import 'package:aei_map_mobile/features/filter_screen/model/filter.dart';
 import 'package:aei_map_mobile/features/filter_screen/widgets/filter_selection.dart';
@@ -13,12 +11,6 @@ class FilterScreen extends StatefulWidget {
 
 class _FilterScreenState extends State<FilterScreen> {
   final FilterBloc _bloc = FilterBloc();
-
-  // This approach does not seem to be an ideal bloc native one but it works.
-  // If there is a better one, show me the way.
-  // There is an Exeption thrown though saying that "A TextEditingController was
-  // used after being disposed". No idea how to fix it.
-  var checkedFilters = new Map<int, List<int>>();
 
   @override
   void initState() {
@@ -49,7 +41,7 @@ class _FilterScreenState extends State<FilterScreen> {
   }
 
   Widget _buildFiltersWidget(List<Filter> filters) {
-    for (var filter in filters) checkedFilters[filter.id] = [];
+    _bloc.initializeCheckedFilters(filters.map((filter) => filter.id).toList());
 
     return SingleChildScrollView(
         physics: ScrollPhysics(),
@@ -61,16 +53,8 @@ class _FilterScreenState extends State<FilterScreen> {
                 itemCount: filters.length,
                 itemBuilder: (BuildContext context, int index) {
                   return FilterSelection(
-                      onChanged: (filterValue) => {
-                            if (checkedFilters[filters[index].id]
-                                .contains(filterValue))
-                              checkedFilters[filters[index].id]
-                                  .remove(filterValue)
-                            else
-                              checkedFilters[filters[index].id]
-                                  .add(filterValue),
-                            _bloc.changeFilters(checkedFilters)
-                          },
+                      onChanged: (filterValueId) => _bloc.changeCheckedFilters(
+                          filters[index].id, filterValueId),
                       filter: filters[index]);
                 }),
             AeiMapButton(

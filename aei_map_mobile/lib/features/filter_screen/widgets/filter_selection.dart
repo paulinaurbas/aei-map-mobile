@@ -26,7 +26,7 @@ class _FilterSelectionState extends State<FilterSelection> {
     return Container(
         // height: 50,
         child: Column(children: [
-      Center(child: Text('${widget.filter.name.name}')),
+      Center(child: Text('${widget.filter.name}')),
       ListView.builder(
           shrinkWrap: true,
           itemCount: widget.filter.possibleValues.length,

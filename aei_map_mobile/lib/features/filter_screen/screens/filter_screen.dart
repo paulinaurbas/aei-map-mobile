@@ -16,6 +16,8 @@ class _FilterScreenState extends State<FilterScreen> {
 
   // This approach does not seem to be an ideal bloc native one but it works.
   // If there is a better one, show me the way.
+  // There is an Exeption thrown though saying that "A TextEditingController was
+  // used after being disposed". No idea how to fix it.
   var checkedFilters = new Map<int, List<int>>();
 
   @override
@@ -47,7 +49,7 @@ class _FilterScreenState extends State<FilterScreen> {
   }
 
   Widget _buildFiltersWidget(List<Filter> filters) {
-    for (var filter in filters) checkedFilters[filter.name.id] = [];
+    for (var filter in filters) checkedFilters[filter.id] = [];
 
     return SingleChildScrollView(
         physics: ScrollPhysics(),
@@ -60,12 +62,12 @@ class _FilterScreenState extends State<FilterScreen> {
                 itemBuilder: (BuildContext context, int index) {
                   return FilterSelection(
                       onChanged: (filterValue) => {
-                            if (checkedFilters[filters[index].name.id]
+                            if (checkedFilters[filters[index].id]
                                 .contains(filterValue))
-                              checkedFilters[filters[index].name.id]
+                              checkedFilters[filters[index].id]
                                   .remove(filterValue)
                             else
-                              checkedFilters[filters[index].name.id]
+                              checkedFilters[filters[index].id]
                                   .add(filterValue),
                             _bloc.changeFilters(checkedFilters)
                           },

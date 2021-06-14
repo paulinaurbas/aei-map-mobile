@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.aei_map_mobile">
    <application
-        android:label="aei_map_mobile"
+        android:label="AEI Map"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

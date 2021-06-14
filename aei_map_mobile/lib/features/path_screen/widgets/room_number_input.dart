@@ -3,7 +3,11 @@ import 'package:flutter/material.dart';
 
 class RoomNumberInput extends StatelessWidget {
   final Function onChanged;
-  const RoomNumberInput({Key key, this.onChanged,}) : super(key: key);
+  final TextEditingController controller;
+  const RoomNumberInput({
+    Key key,
+    this.onChanged, this.controller,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -13,9 +17,10 @@ class RoomNumberInput extends StatelessWidget {
         decoration: BoxDecoration(
             color: Colors.white,
             border: Border.all(color: Colors.white),
-            borderRadius: BorderRadius.circular(30)
-        ),
+            borderRadius: BorderRadius.circular(30)),
         child: TextFormField(
+          controller: controller,
+          style: TextStyle(color: Colors.black),
           decoration: const InputDecoration(
               focusedBorder: InputBorder.none,
               enabledBorder: InputBorder.none,

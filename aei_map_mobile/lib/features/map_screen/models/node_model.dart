@@ -4,11 +4,9 @@ class Node {
   int y;
 
   Node.fromJson(Map<dynamic, dynamic> json)
-      :  x = json["x"],
-         order = json["order"],
-         y = json["y"];
+      : x = json["x"],
+        order = json["order"],
+        y = json["y"];
 
   Node(this.x, this.y, this.order);
-
 }
-

@@ -17,8 +17,9 @@ class FilterScreenApiProvider {
   }
 
   Future<List<int>> getFilteredRooms(
-      BuildContext context, List<Filter> checkedFilters) async {
+      BuildContext context, Map<int, List<int>> checkedFilters) async {
     // TODO: Get the real data. It's just a mock one
+    print(checkedFilters.toString());
     await Future.delayed(const Duration(seconds: 1));
     String data = await DefaultAssetBundle.of(context)
         .loadString("assets/json/filtered_rooms.json");

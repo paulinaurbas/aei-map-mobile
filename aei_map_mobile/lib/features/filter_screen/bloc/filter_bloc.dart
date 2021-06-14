@@ -8,13 +8,14 @@ class FilterBloc extends BlocProvider {
   final FilterScreenRepository _repository = FilterScreenRepository();
 
   final BehaviorSubject<List<Filter>> _filters = BehaviorSubject();
-  final BehaviorSubject<List<Filter>> _checkedFilters = BehaviorSubject();
+  final BehaviorSubject<Map<int, List<int>>> _checkedFilters =
+      BehaviorSubject();
   final BehaviorSubject<List<int>> _filteredRooms = BehaviorSubject();
 
   BehaviorSubject<List<Filter>> get filters => _filters;
   BehaviorSubject<List<int>> get filteredRooms => _filteredRooms;
 
-  Function(List<Filter>) get changeFilters => _checkedFilters.sink.add;
+  Function(Map<int, List<int>>) get changeFilters => _checkedFilters.sink.add;
 
   getFiltres(BuildContext context) async {
     _repository

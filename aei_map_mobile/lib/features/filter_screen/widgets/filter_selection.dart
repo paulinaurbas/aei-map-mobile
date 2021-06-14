@@ -39,7 +39,7 @@ class _FilterSelectionState extends State<FilterSelection> {
                     setState(() {
                       _checkedCheckbox[index] = !_checkedCheckbox[index];
                     });
-                    widget.onChanged(widget.filter.possibleValues[index]);
+                    widget.onChanged(widget.filter.possibleValues[index].id);
                   },
                 ),
                 Text('${widget.filter.possibleValues[index].name}'),

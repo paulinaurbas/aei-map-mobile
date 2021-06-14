@@ -9,6 +9,6 @@ class FilterScreenRepository {
       _filterScreenApiProvider.getFilters(context);
 
   Future<List<int>> getFilteredRooms(
-          BuildContext context, List<Filter> checkedFilters) =>
+          BuildContext context, Map<int, List<int>> checkedFilters) =>
       _filterScreenApiProvider.getFilteredRooms(context, checkedFilters);
 }

@@ -6,12 +6,13 @@ import 'package:aei_map_mobile/styles/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class RenderMap extends CustomPainter {
-  RenderMap(
-      this.absoluteImageSize, this.phoneSize, this._roomModel, this._pathModel);
+  RenderMap(this.absoluteImageSize, this.phoneSize, this._roomModel,
+      this._pathModel, this._filteredRoomsModel);
 
   final Size phoneSize;
   final List<RoomModel> _roomModel;
   final List<PathModel> _pathModel;
+  final List<int> _filteredRoomsModel;
   final Size absoluteImageSize;
   double avgHeight = 0;
   double avgWeight = 0;
@@ -36,11 +37,26 @@ class RenderMap extends CustomPainter {
     if (_pathModel != null) _drawPathToRoom(pathToRoom, scaleX, scaleY);
     canvas.drawPath(drawRoomsOnMap, roomsPainter);
     if (_pathModel != null) canvas.drawPath(pathToRoom, pathLine);
+
+    if (_filteredRoomsModel != null) {
+      final Paint filteredRoomsPainter = Paint()
+        ..style = PaintingStyle.fill
+        ..color = appColors['filtered_room_color'];
+      Path drawFilteredRoomsOnMap = Path();
+      _drawRooms(drawFilteredRoomsOnMap, scaleX, scaleY, filtered: true);
+      canvas.drawPath(drawFilteredRoomsOnMap, filteredRoomsPainter);
+    }
+
     _drawRoomsNumber(canvas, scaleX, scaleY);
   }
 
-  void _drawRooms(Path drawRoomsOnMap, double scaleX, double scaleY) {
-    for (final element in _roomModel) {
+  void _drawRooms(Path drawRoomsOnMap, double scaleX, double scaleY,
+      {bool filtered = false}) {
+    for (final element in filtered
+        ? _roomModel
+            .where((element) => _filteredRoomsModel.contains(element.id))
+            .toList()
+        : _roomModel) {
       drawRoomsOnMap.moveTo(element.listOfNodes.first.x * scaleX,
           element.listOfNodes.first.y * scaleY);
       for (final node in element.listOfNodes) {

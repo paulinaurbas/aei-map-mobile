@@ -19,9 +19,9 @@ class MapScreen extends StatefulWidget {
 
   MapScreen(
       {Key key,
-      this.isScreenWithPath,
+      this.isScreenWithPath = false,
       this.paths,
-      this.isScreenWithFilteredRooms,
+      this.isScreenWithFilteredRooms = false,
       this.filteredRooms})
       : super(key: key);
 
@@ -38,6 +38,7 @@ class _MapScreenState extends State<MapScreen> {
   List<int> floors;
   AllPaths _paths;
   List<PathModel> _pathForFloor;
+  List<int> _filteredRoomsIdsForFloor;
   String liftToFloor;
   bool nextButtonPressed = false;
   bool previousButtonPressed = false;
@@ -82,6 +83,8 @@ class _MapScreenState extends State<MapScreen> {
         if (widget.isScreenWithPath == true) {
           _pathForFloor = _mapBloc.filter(widget.paths.path, floorNumber);
         }
+        if (widget.isScreenWithFilteredRooms)
+          _filteredRoomsIdsForFloor = widget.filteredRooms[floorNumber];
       }
     });
   }
@@ -140,8 +143,12 @@ class _MapScreenState extends State<MapScreen> {
           width: double.maxFinite,
           color: Colors.black,
           child: CustomPaint(
-            foregroundPainter: RenderMap(_imageSize,
-                MediaQuery.of(context).size, listWithRooms, _pathForFloor),
+            foregroundPainter: RenderMap(
+                _imageSize,
+                MediaQuery.of(context).size,
+                listWithRooms,
+                _pathForFloor,
+                _filteredRoomsIdsForFloor),
             child: AspectRatio(
               aspectRatio: _imageSize.aspectRatio,
               child: image,
@@ -165,6 +172,9 @@ class _MapScreenState extends State<MapScreen> {
                   });
                   if (widget.isScreenWithPath)
                     _pathForFloor = _mapBloc.filter(_paths?.path, floorNumber);
+                  if (widget.isScreenWithFilteredRooms)
+                    _filteredRoomsIdsForFloor =
+                        widget.filteredRooms[floorNumber];
                   _mapBloc.getRoomList(context, floorNumber);
                 }
               : null,
@@ -188,6 +198,9 @@ class _MapScreenState extends State<MapScreen> {
                     _mapBloc.getRoomList(context, floorNumber);
                     if (widget.isScreenWithPath)
                       _pathForFloor = _mapBloc.filter(_paths.path, floorNumber);
+                    if (widget.isScreenWithFilteredRooms)
+                      _filteredRoomsIdsForFloor =
+                          widget.filteredRooms[floorNumber];
                   }
                 : null,
           ),

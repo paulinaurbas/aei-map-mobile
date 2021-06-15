@@ -8,7 +8,7 @@ class FilterScreenRepository {
   Future<List<Filter>> getFilters(BuildContext context) =>
       _filterScreenApiProvider.getFilters(context);
 
-  Future<List<int>> getFilteredRooms(
+  Future<Map<int, List<int>>> getFilteredRooms(
           BuildContext context, Map<int, List<int>> checkedFilters) =>
       _filterScreenApiProvider.getFilteredRooms(context, checkedFilters);
 }

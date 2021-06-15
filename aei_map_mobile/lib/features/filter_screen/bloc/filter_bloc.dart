@@ -10,16 +10,15 @@ class FilterBloc extends BlocProvider {
   final BehaviorSubject<List<Filter>> _filters = BehaviorSubject();
   final BehaviorSubject<Map<int, List<int>>> _checkedFilters =
       BehaviorSubject();
-  final BehaviorSubject<List<int>> _filteredRooms = BehaviorSubject();
+  final BehaviorSubject<Map<int, List<int>>> _filteredRooms = BehaviorSubject();
 
   BehaviorSubject<List<Filter>> get filters => _filters;
-  BehaviorSubject<List<int>> get filteredRooms => _filteredRooms;
+  BehaviorSubject<Map<int, List<int>>> get filteredRooms => _filteredRooms;
 
   initializeCheckedFilters(List<int> filterIds) {
     Map<int, List<int>> emptyCheckedFilters = {};
     for (var filterId in filterIds) emptyCheckedFilters[filterId] = [];
     _checkedFilters.sink.add(emptyCheckedFilters);
-    print(emptyCheckedFilters.toString());
   }
 
   changeCheckedFilters(int filterId, int valueId) {

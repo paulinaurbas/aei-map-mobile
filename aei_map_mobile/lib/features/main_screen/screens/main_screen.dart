@@ -19,6 +19,7 @@ class _MainScreenState extends State<MainScreen> {
   final List<Widget> _children = [
     MapScreen(
       isScreenWithPath: false,
+      isScreenWithFilteredRooms: false,
     ),
     FilterScreen(),
     PathScreen()

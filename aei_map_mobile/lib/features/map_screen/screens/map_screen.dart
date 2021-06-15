@@ -1,13 +1,11 @@
 import 'dart:async';
 import 'dart:ui';
-
 import 'package:aei_map_mobile/features/map_screen/bloc/map_screen_bloc.dart';
 import 'package:aei_map_mobile/features/map_screen/models/all_paths.dart';
 import 'package:aei_map_mobile/features/map_screen/models/floor_model.dart';
 import 'package:aei_map_mobile/features/map_screen/models/path_model.dart';
 import 'package:aei_map_mobile/features/map_screen/models/room_model.dart';
 import 'package:aei_map_mobile/features/map_screen/widgets/map_render_wtih_lib.dart';
-import 'package:aei_map_mobile/styles/app_colors.dart';
 import 'package:aei_map_mobile/styles/app_strings.dart';
 import 'package:aei_map_mobile/styles/widgets/aei_map_button.dart';
 import 'package:aei_map_mobile/styles/widgets/progress_indicator.dart';
@@ -15,8 +13,17 @@ import 'package:flutter/material.dart';
 
 class MapScreen extends StatefulWidget {
   final bool isScreenWithPath;
-  AllPaths paths;
-  MapScreen({Key key, this.isScreenWithPath, this.paths}) : super(key: key);
+  final bool isScreenWithFilteredRooms;
+  final AllPaths paths;
+  final Map<int, List<int>> filteredRooms;
+
+  MapScreen(
+      {Key key,
+      this.isScreenWithPath,
+      this.paths,
+      this.isScreenWithFilteredRooms,
+      this.filteredRooms})
+      : super(key: key);
 
   @override
   _MapScreenState createState() => _MapScreenState();
@@ -104,12 +111,12 @@ class _MapScreenState extends State<MapScreen> {
                     }
                   }),
               if (floorNumber < (floors.length ?? 0)) _getNextBottomButton,
-              if (floorNumber > theLowestFloorInBuilding) _getPrevoiusBottomButton
+              if (floorNumber > theLowestFloorInBuilding)
+                _getPrevoiusBottomButton
             ],
           )
         : getIndicator;
   }
-
 
   Widget get _getLiftTitle => Align(
         alignment: Alignment.topCenter,
@@ -157,8 +164,7 @@ class _MapScreenState extends State<MapScreen> {
                     floorNumber++;
                   });
                   if (widget.isScreenWithPath)
-                    _pathForFloor =
-                        _mapBloc.filter(_paths?.path, floorNumber);
+                    _pathForFloor = _mapBloc.filter(_paths?.path, floorNumber);
                   _mapBloc.getRoomList(context, floorNumber);
                 }
               : null,
@@ -181,8 +187,7 @@ class _MapScreenState extends State<MapScreen> {
                     });
                     _mapBloc.getRoomList(context, floorNumber);
                     if (widget.isScreenWithPath)
-                      _pathForFloor =
-                          _mapBloc.filter(_paths.path, floorNumber);
+                      _pathForFloor = _mapBloc.filter(_paths.path, floorNumber);
                   }
                 : null,
           ),

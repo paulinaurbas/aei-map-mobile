@@ -15,12 +15,10 @@ class _FilterScreenState extends State<FilterScreen> {
   @override
   void initState() {
     _bloc.getFiltres(context);
-    _bloc.filteredRooms.stream.listen((event) {
-      if (event != null) {
-        // TODO: Filtered rooms are fetched. How to navigate to the map_screen
-        //       with the found rooms highlighted?
-        // Navigator.of(context).push(route, arguments: event)
-      }
+    _bloc.filteredRooms.stream.listen((filteredRooms) {
+      if (filteredRooms != null)
+        Navigator.pushNamed(context, '/MapScreenWithFilteredRooms',
+            arguments: filteredRooms);
     });
     super.initState();
   }

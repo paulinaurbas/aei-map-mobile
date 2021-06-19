@@ -42,27 +42,31 @@ class _FilterScreenState extends State<FilterScreen> {
     _bloc.initializeCheckedFilters(filters.map((filter) => filter.id).toList());
 
     return SingleChildScrollView(
-        physics: ScrollPhysics(),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ListView.builder(
-                shrinkWrap: true,
-                itemCount: filters.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return FilterSelection(
-                      onChanged: (filterValueId) => _bloc.changeCheckedFilters(
-                          filters[index].id, filterValueId),
-                      filter: filters[index]);
-                }),
-            AeiMapButton(
-              buttonDescription: 'Find matching rooms',
-              onPressed: () {
-                _bloc.getFilteredRooms(context);
-              },
-            )
-          ],
-        ));
+      physics: ScrollPhysics(),
+      child: Padding(
+          padding: const EdgeInsets.all(30.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: filters.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return FilterSelection(
+                        onChanged: (filterValueId) =>
+                            _bloc.changeCheckedFilters(
+                                filters[index].id, filterValueId),
+                        filter: filters[index]);
+                  }),
+              AeiMapButton(
+                buttonDescription: 'Find matching rooms',
+                onPressed: () {
+                  _bloc.getFilteredRooms(context);
+                },
+              )
+            ],
+          )),
+    );
   }
 
   Widget _buildLoadingWidget() {

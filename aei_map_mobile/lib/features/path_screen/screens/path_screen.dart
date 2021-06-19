@@ -3,6 +3,7 @@ import 'package:aei_map_mobile/features/path_screen/widgets/room_number_input.da
 import 'package:aei_map_mobile/styles/app_strings.dart';
 import 'package:aei_map_mobile/styles/widgets/aei_map_button.dart';
 import 'package:aei_map_mobile/styles/widgets/progress_indicator.dart';
+import 'package:aei_map_mobile/styles/widgets/show_snack_bar_with_error.dart';
 import 'package:flutter/material.dart';
 
 class PathScreen extends StatefulWidget {
@@ -75,6 +76,11 @@ class _PathScreenState extends State<PathScreen> {
     super.initState();
     _pathBloc.answerFromBackend.listen((value) {
       Navigator.pushNamed(context, '/MapScreenWithPath', arguments: value);
+      setState(() {
+        isLoading = false;
+      });
+    }).onError((e){
+      showSnackBar(context);
       setState(() {
         isLoading = false;
       });

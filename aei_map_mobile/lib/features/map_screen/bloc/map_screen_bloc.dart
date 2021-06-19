@@ -16,13 +16,14 @@ class MapBloc extends BlocProvider {
 
   getFloorsId(BuildContext context) async => await _mapScreenRepository
       .getFloorsId(context)
-      .then((value) => floorList.sink.add(value));
+      .then((value) => floorList.sink.add(value)).onError((error, stackTrace) => floorList.sink.addError(error));
 
   getRoomList(BuildContext context, int floorNumber) {
     roomList.sink.add(null);
     return _mapScreenRepository
         .listWithRooms(context, floorNumber)
-        .then((value) => roomList.sink.add(value));
+        .then((value) => roomList.sink.add(value))
+        .onError((error, stackTrace) => roomList.sink.addError(error));
   }
 
 

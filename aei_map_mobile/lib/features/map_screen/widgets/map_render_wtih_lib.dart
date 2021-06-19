@@ -1,13 +1,12 @@
 import 'dart:ui';
-
 import 'package:aei_map_mobile/features/map_screen/models/path_model.dart';
 import 'package:aei_map_mobile/features/map_screen/models/room_model.dart';
 import 'package:aei_map_mobile/styles/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class RenderMap extends CustomPainter {
-  RenderMap(this.absoluteImageSize, this.phoneSize, this._roomModel,
-      this._pathModel);
+  RenderMap(
+      this.absoluteImageSize, this.phoneSize, this._roomModel, this._pathModel);
 
   final Size phoneSize;
   final List<RoomModel> _roomModel;
@@ -33,8 +32,17 @@ class RenderMap extends CustomPainter {
       ..color = appColors['way_color']
       ..strokeWidth = 2.0;
 
+    final Paint pathLineStroke = Paint()
+      ..style = PaintingStyle.stroke
+      ..color = appColors['background_color']
+      ..strokeWidth = 0.5;
+
     if (_pathModel != null) _drawPathToRoom(pathToRoom, scaleX, scaleY);
+
     canvas.drawPath(drawRoomsOnMap, roomsPainter);
+    canvas.drawPath(drawRoomsOnMap, pathLineStroke);
+
+
     if (_pathModel != null) canvas.drawPath(pathToRoom, pathLine);
     _drawRoomsNumber(canvas, scaleX, scaleY);
   }
@@ -62,11 +70,15 @@ class RenderMap extends CustomPainter {
       avgWeight = avgWeight / element.listOfNodes.length;
       for (int i = 0; i < element.room.length; i++) {
         _paintText(
-            canvas, Size(avgWeight * scaleY, avgHeight * scaleX), element.roomNumber.toString() + ' ' + (element.roomNumber > 0 ? '' : element.roomNumber.toString()));
+            canvas,
+            Size(avgWeight * scaleY, avgHeight * scaleX),
+           (element.roomNumber > 0 ? element.roomNumber.toString() : element.room.toString() +
+                ' (' +
+               element.roomNumber.toString() + ')'));
+      }
+      avgHeight = 0;
+      avgWeight = 0;
     }
-    avgHeight = 0;
-    avgWeight = 0;
-  }
   }
 
   void _drawPathToRoom(Path path, double scaleX, double scaleY) {

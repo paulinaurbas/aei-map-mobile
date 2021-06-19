@@ -62,7 +62,7 @@ class _MapScreenState extends State<MapScreen> {
     _mapBloc.getFloorsId(context);
     if (widget.isScreenWithPath == true) {
       _paths = widget.paths;
-      liftToFloor = _mapBloc.getFloorToUseLift(_paths);
+      liftToFloor = _paths.path.toString();
     }
     _mapBloc.floorList.stream.listen((event) {
       if (event != null) {

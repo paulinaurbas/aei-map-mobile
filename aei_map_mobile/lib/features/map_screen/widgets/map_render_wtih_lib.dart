@@ -6,8 +6,8 @@ import 'package:aei_map_mobile/styles/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class RenderMap extends CustomPainter {
-  RenderMap(
-      this.absoluteImageSize, this.phoneSize, this._roomModel, this._pathModel);
+  RenderMap(this.absoluteImageSize, this.phoneSize, this._roomModel,
+      this._pathModel);
 
   final Size phoneSize;
   final List<RoomModel> _roomModel;
@@ -62,11 +62,11 @@ class RenderMap extends CustomPainter {
       avgWeight = avgWeight / element.listOfNodes.length;
       for (int i = 0; i < element.room.length; i++) {
         _paintText(
-            canvas, Size(avgWeight * scaleY, avgHeight * scaleX), element.roomNumber.toString());
-      }
-      avgHeight = 0;
-      avgWeight = 0;
+            canvas, Size(avgWeight * scaleY, avgHeight * scaleX), element.roomNumber.toString() + ' ' + (element.roomNumber > 0 ? '' : element.roomNumber.toString()));
     }
+    avgHeight = 0;
+    avgWeight = 0;
+  }
   }
 
   void _drawPathToRoom(Path path, double scaleX, double scaleY) {
@@ -82,7 +82,7 @@ class RenderMap extends CustomPainter {
 
   void _paintText(Canvas canvas, Size size, String roomNumber) {
     final textSpan = TextSpan(
-        text: roomNumber, style: TextStyle(color: Colors.black, fontSize: 12));
+        text: roomNumber, style: TextStyle(color: Colors.black, fontSize: 10));
     final textPainter = TextPainter(
       text: textSpan,
       textDirection: TextDirection.ltr,

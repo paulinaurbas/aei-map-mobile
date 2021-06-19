@@ -37,14 +37,16 @@ class RenderMap extends CustomPainter {
       ..color = appColors['background_color']
       ..strokeWidth = 0.5;
 
-    if (_pathModel != null) _drawPathToRoom(pathToRoom, scaleX, scaleY);
+    if (_pathModel != null) _drawPathToRoom(canvas, pathToRoom, scaleX, scaleY);
 
     canvas.drawPath(drawRoomsOnMap, roomsPainter);
     canvas.drawPath(drawRoomsOnMap, pathLineStroke);
 
 
     if (_pathModel != null) canvas.drawPath(pathToRoom, pathLine);
+    if (_pathModel != null) drawIcon(canvas, (_pathModel.last.path.last.x) * scaleX, _pathModel.last.path.last.y * scaleY);
     _drawRoomsNumber(canvas, scaleX, scaleY);
+
   }
 
   void _drawRooms(Path drawRoomsOnMap, double scaleX, double scaleY) {
@@ -81,15 +83,34 @@ class RenderMap extends CustomPainter {
     }
   }
 
-  void _drawPathToRoom(Path path, double scaleX, double scaleY) {
+  void _drawPathToRoom(Canvas canvas, Path path, double scaleX, double scaleY) {
     for (final element in _pathModel) {
-      path.moveTo(element.path.first.x * scaleX, element.path.first.y * scaleY);
-      for (final node in element.path) {
-        path.lineTo(node.x * scaleX, node.y * scaleY);
-        path.moveTo(node.x * scaleX, node.y * scaleY);
+      if (element != null) {
+        path.moveTo(
+            element.path.first.x * scaleX, element.path.first.y * scaleY);
+        for (final node in element.path) {
+          path.lineTo(node.x * scaleX, node.y * scaleY);
+          path.moveTo(node.x * scaleX, node.y * scaleY);
+        }
+        path.close();
       }
     }
-    path.close();
+  }
+
+  void drawIcon(Canvas canvas, double x, double y) {
+    final icon = Icons.add_location_outlined;
+    TextPainter textPainter = TextPainter(textDirection: TextDirection.ltr);
+    textPainter.text = TextSpan(
+      text: String.fromCharCode(icon.codePoint),
+      style: TextStyle(
+        color: appColors['way_color'],
+        fontSize: 12,
+        fontFamily: icon.fontFamily,
+        package: icon.fontPackage, // This line is mandatory for external icon packs
+      ),
+    );
+    textPainter.layout();
+    textPainter.paint(canvas, Offset(x-12, y - 12));
   }
 
   void _paintText(Canvas canvas, Size size, String roomNumber) {

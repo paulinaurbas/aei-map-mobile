@@ -25,7 +25,9 @@ class PathBloc extends BlocProvider {
         .findPathBetweenPoints(int.parse(_startPointRoomNumber.value),
             int.parse(_endPointRoomNumber.value))
         .then((value) => answerFromBackend.add(value))
-        .onError((error, stackTrace) => answerFromBackend.addError(error));
+        .onError((error, stackTrace) {
+          answerFromBackend.addError(error);
+        });
   }
 
   void dispose() {

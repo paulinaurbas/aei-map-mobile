@@ -31,7 +31,7 @@ class _MapScreenState extends State<MapScreen> {
   List<int> floors;
   AllPaths _paths;
   List<PathModel> _pathForFloor;
-  String liftToFloor;
+  StringBuffer liftToFloor;
   bool nextButtonPressed = false;
   bool previousButtonPressed = false;
 
@@ -62,15 +62,26 @@ class _MapScreenState extends State<MapScreen> {
     _mapBloc.getFloorsId(context);
     if (widget.isScreenWithPath == true) {
       _paths = widget.paths;
-      liftToFloor = _paths.path.toString();
+      var concatenate = StringBuffer();
+      _paths.path.forEach((item){
+        concatenate.write(item.floorId);
+        concatenate.write(' ');
+      });
+      liftToFloor = concatenate;
     }
     _mapBloc.floorList.stream.listen((event) {
       if (event != null) {
         setState(() {
           floors = event;
         });
-        _mapBloc.getRoomList(context, event.first);
-        floorNumber = event.first;
+
+        if(widget.isScreenWithPath){
+          floorNumber = widget.paths.path.first.floorId;
+          _mapBloc.getRoomList(context, floorNumber);
+        } else {
+          _mapBloc.getRoomList(context, event.first);
+          floorNumber = event.first;
+        }
         theLowestFloorInBuilding = event.first;
         if (widget.isScreenWithPath == true) {
           _pathForFloor = _mapBloc.filter(widget.paths.path, floorNumber);

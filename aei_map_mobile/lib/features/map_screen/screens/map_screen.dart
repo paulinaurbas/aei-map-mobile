@@ -15,7 +15,7 @@ class MapScreen extends StatefulWidget {
   final bool isScreenWithPath;
   final bool isScreenWithFilteredRooms;
   final AllPaths paths;
-  final Map<int, List<int>> filteredRooms;
+  final List<int> filteredRooms;
 
   MapScreen(
       {Key key,
@@ -38,7 +38,7 @@ class _MapScreenState extends State<MapScreen> {
   List<int> floors;
   AllPaths _paths;
   List<PathModel> _pathForFloor;
-  List<int> _filteredRoomsIdsForFloor;
+  List<int> _filteredRoomsIds;
   String liftToFloor;
   bool nextButtonPressed = false;
   bool previousButtonPressed = false;
@@ -84,7 +84,7 @@ class _MapScreenState extends State<MapScreen> {
           _pathForFloor = _mapBloc.filter(widget.paths.path, floorNumber);
         }
         if (widget.isScreenWithFilteredRooms)
-          _filteredRoomsIdsForFloor = widget.filteredRooms[floorNumber];
+          _filteredRoomsIds = widget.filteredRooms;
       }
     });
   }
@@ -148,7 +148,7 @@ class _MapScreenState extends State<MapScreen> {
                 MediaQuery.of(context).size,
                 listWithRooms,
                 _pathForFloor,
-                _filteredRoomsIdsForFloor),
+                _filteredRoomsIds),
             child: AspectRatio(
               aspectRatio: _imageSize.aspectRatio,
               child: image,
@@ -172,9 +172,6 @@ class _MapScreenState extends State<MapScreen> {
                   });
                   if (widget.isScreenWithPath)
                     _pathForFloor = _mapBloc.filter(_paths?.path, floorNumber);
-                  if (widget.isScreenWithFilteredRooms)
-                    _filteredRoomsIdsForFloor =
-                        widget.filteredRooms[floorNumber];
                   _mapBloc.getRoomList(context, floorNumber);
                 }
               : null,
@@ -198,9 +195,6 @@ class _MapScreenState extends State<MapScreen> {
                     _mapBloc.getRoomList(context, floorNumber);
                     if (widget.isScreenWithPath)
                       _pathForFloor = _mapBloc.filter(_paths.path, floorNumber);
-                    if (widget.isScreenWithFilteredRooms)
-                      _filteredRoomsIdsForFloor =
-                          widget.filteredRooms[floorNumber];
                   }
                 : null,
           ),

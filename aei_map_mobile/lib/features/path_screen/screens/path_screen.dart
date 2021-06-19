@@ -16,6 +16,8 @@ class _PathScreenState extends State<PathScreen> {
 
   @override
   void dispose() {
+    _pathBloc.inputStartPointController.dispose();
+    _pathBloc.inputEndPointController.dispose();
     _pathBloc.dispose();
     super.dispose();
   }
@@ -66,6 +68,7 @@ class _PathScreenState extends State<PathScreen> {
       ),
     );
   }
+
 
   @override
   void initState() {

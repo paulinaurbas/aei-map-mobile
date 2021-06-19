@@ -23,29 +23,36 @@ class _FilterSelectionState extends State<FilterSelection> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        // height: 50,
-        child: Column(children: [
-      Center(child: Text('${widget.filter.name}')),
-      ListView.builder(
-          shrinkWrap: true,
-          itemCount: widget.filter.possibleValues.length,
-          itemBuilder: (BuildContext context, int index) {
-            return Row(
-              children: [
-                Checkbox(
-                  value: _checkedCheckbox[index],
-                  onChanged: (value) {
-                    setState(() {
-                      _checkedCheckbox[index] = !_checkedCheckbox[index];
-                    });
-                    widget.onChanged(widget.filter.possibleValues[index].id);
-                  },
-                ),
-                Text('${widget.filter.possibleValues[index].name}'),
-              ],
-            );
-          })
-    ]));
+    return Theme(
+        data: ThemeData(unselectedWidgetColor: Colors.white),
+        child: Container(
+            child: Column(children: [
+          Center(
+              child: Text(
+            '${widget.filter.name}',
+            style: TextStyle(fontSize: 25),
+          )),
+          ListView.builder(
+              shrinkWrap: true,
+              itemCount: widget.filter.possibleValues.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Row(
+                  children: [
+                    Checkbox(
+                      value: _checkedCheckbox[index],
+                      activeColor: Colors.green,
+                      onChanged: (value) {
+                        setState(() {
+                          _checkedCheckbox[index] = !_checkedCheckbox[index];
+                        });
+                        widget
+                            .onChanged(widget.filter.possibleValues[index].id);
+                      },
+                    ),
+                    Text('${widget.filter.possibleValues[index].name}'),
+                  ],
+                );
+              })
+        ])));
   }
 }

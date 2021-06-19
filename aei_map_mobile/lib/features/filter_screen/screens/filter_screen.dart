@@ -71,9 +71,11 @@ class _FilterScreenState extends State<FilterScreen> {
 
   Widget _buildLoadingWidget() {
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-      Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [CircularProgressIndicator()])
+      Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+        CircularProgressIndicator(
+          valueColor: new AlwaysStoppedAnimation<Color>(Colors.green),
+        )
+      ])
     ]);
   }
 

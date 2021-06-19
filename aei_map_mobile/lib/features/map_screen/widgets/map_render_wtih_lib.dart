@@ -62,7 +62,7 @@ class RenderMap extends CustomPainter {
       avgWeight = avgWeight / element.listOfNodes.length;
       for (int i = 0; i < element.room.length; i++) {
         _paintText(
-            canvas, Size(avgWeight * scaleY, avgHeight * scaleX), element.id.toString());
+            canvas, Size(avgWeight * scaleY, avgHeight * scaleX), element.roomNumber.toString());
       }
       avgHeight = 0;
       avgWeight = 0;

@@ -4,11 +4,13 @@ class RoomModel {
   String room;
   String type;
   int id;
+  int roomNumber;
   int floorId;
   List<Node> listOfNodes;
 
   RoomModel.fromJson(Map<dynamic, dynamic> json)
       : room = json["name"],
+        roomNumber = json["number"],
         floorId = json["floor_id"],
         listOfNodes = (json['points'] as List<dynamic>)
             .map((e) => Node.fromJson(e as Map<String, dynamic>))

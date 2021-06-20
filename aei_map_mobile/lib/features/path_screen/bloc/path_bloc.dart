@@ -10,9 +10,10 @@ class PathBloc extends BlocProvider {
   final BehaviorSubject<String> _startPointRoomNumber =
       BehaviorSubject<String>();
   final BehaviorSubject<String> _endPointRoomNumber = BehaviorSubject<String>();
-  final BehaviorSubject<AllPaths> answerFromBackend = BehaviorSubject<AllPaths>();
-  final TextEditingController inputStartPointController = TextEditingController();
-  final TextEditingController inputEndPointController = TextEditingController();
+  final BehaviorSubject<AllPaths> answerFromBackend =
+      BehaviorSubject<AllPaths>();
+  TextEditingController inputStartPointController = TextEditingController();
+  TextEditingController inputEndPointController = TextEditingController();
 
   Function(String) get changeStartPointRoomNumber =>
       _startPointRoomNumber.sink.add;
@@ -23,12 +24,15 @@ class PathBloc extends BlocProvider {
     return _pathScreenRepository
         .findPathBetweenPoints(int.parse(_startPointRoomNumber.value),
             int.parse(_endPointRoomNumber.value))
-        .then((value) => answerFromBackend.add(value));
+        .then((value) => answerFromBackend.add(value))
+        .onError((error, stackTrace) {
+          answerFromBackend.addError(error);
+        });
   }
 
   void dispose() {
-    inputEndPointController.dispose();
-    inputEndPointController.dispose();
+    inputEndPointController.clear();
+    inputEndPointController.clear();
     _startPointRoomNumber.close();
     _endPointRoomNumber.close();
     answerFromBackend.close();

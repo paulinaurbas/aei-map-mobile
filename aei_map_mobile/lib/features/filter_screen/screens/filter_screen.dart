@@ -1,6 +1,7 @@
 import 'package:aei_map_mobile/features/filter_screen/bloc/filter_bloc.dart';
 import 'package:aei_map_mobile/features/filter_screen/model/filter.dart';
 import 'package:aei_map_mobile/features/filter_screen/widgets/filter_selection.dart';
+import 'package:aei_map_mobile/styles/app_colors.dart';
 import 'package:aei_map_mobile/styles/widgets/aei_map_button.dart';
 import 'package:flutter/material.dart';
 
@@ -73,7 +74,7 @@ class _FilterScreenState extends State<FilterScreen> {
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
       Column(mainAxisAlignment: MainAxisAlignment.center, children: [
         CircularProgressIndicator(
-          valueColor: new AlwaysStoppedAnimation<Color>(Colors.green),
+          valueColor: new AlwaysStoppedAnimation<Color>(appColors['primary_app_color']),
         )
       ])
     ]);

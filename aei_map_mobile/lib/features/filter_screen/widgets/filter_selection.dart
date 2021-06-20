@@ -1,6 +1,7 @@
-import 'package:flutter/widgets.dart';
 import 'package:aei_map_mobile/features/filter_screen/model/filter.dart';
+import 'package:aei_map_mobile/styles/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class FilterSelection extends StatefulWidget {
   FilterSelection({Key key, this.onChanged, this.filter}) : super(key: key);
@@ -30,7 +31,7 @@ class _FilterSelectionState extends State<FilterSelection> {
           Center(
               child: Text(
             '${widget.filter.name}',
-            style: TextStyle(fontSize: 25),
+            style: TextStyle(fontSize: 25, letterSpacing: 0.40),
           )),
           ListView.builder(
               shrinkWrap: true,
@@ -40,7 +41,7 @@ class _FilterSelectionState extends State<FilterSelection> {
                   children: [
                     Checkbox(
                       value: _checkedCheckbox[index],
-                      activeColor: Colors.green,
+                      activeColor: appColors["primary_app_color"],
                       onChanged: (value) {
                         setState(() {
                           _checkedCheckbox[index] = !_checkedCheckbox[index];

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class RoomNumberInput extends StatelessWidget {
   final Function onChanged;
@@ -20,6 +21,7 @@ class RoomNumberInput extends StatelessWidget {
             borderRadius: BorderRadius.circular(30)),
         child: TextFormField(
           controller: controller,
+          inputFormatters: [ FilteringTextInputFormatter.deny(RegExp("[a-zA-Z]")),],
           style: TextStyle(color: Colors.black),
           decoration: const InputDecoration(
               focusedBorder: InputBorder.none,
@@ -27,7 +29,6 @@ class RoomNumberInput extends StatelessWidget {
               errorBorder: InputBorder.none,
               hintText: 'Room',
               contentPadding: EdgeInsets.only(top: 2.0, left: 10)),
-          keyboardType: TextInputType.number,
           onChanged: onChanged,
         ),
       ),

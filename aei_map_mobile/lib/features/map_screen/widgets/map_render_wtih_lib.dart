@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:aei_map_mobile/features/map_screen/models/path_model.dart';
 import 'package:aei_map_mobile/features/map_screen/models/room_model.dart';
 import 'package:aei_map_mobile/styles/app_colors.dart';
@@ -33,10 +32,21 @@ class RenderMap extends CustomPainter {
       ..color = appColors['way_color']
       ..strokeWidth = 2.0;
 
-    if (_pathModel != null) _drawPathToRoom(pathToRoom, scaleX, scaleY);
+    final Paint pathLineStroke = Paint()
+      ..style = PaintingStyle.stroke
+      ..color = appColors['background_color']
+      ..strokeWidth = 0.5;
+
+    if (_pathModel != null) _drawPathToRoom(canvas, pathToRoom, scaleX, scaleY);
+
     canvas.drawPath(drawRoomsOnMap, roomsPainter);
+    canvas.drawPath(drawRoomsOnMap, pathLineStroke);
+
+
     if (_pathModel != null) canvas.drawPath(pathToRoom, pathLine);
+    if (_pathModel != null) drawIcon(canvas, (_pathModel.last.path.last.x) * scaleX, _pathModel.last.path.last.y * scaleY);
     _drawRoomsNumber(canvas, scaleX, scaleY);
+
   }
 
   void _drawRooms(Path drawRoomsOnMap, double scaleX, double scaleY) {
@@ -62,27 +72,50 @@ class RenderMap extends CustomPainter {
       avgWeight = avgWeight / element.listOfNodes.length;
       for (int i = 0; i < element.room.length; i++) {
         _paintText(
-            canvas, Size(avgWeight * scaleY, avgHeight * scaleX), element.room);
+            canvas,
+            Size(avgWeight * scaleY, avgHeight * scaleX),
+           (element.roomNumber > 0 ? element.roomNumber.toString() : element.room.toString() +
+                ' (' +
+               element.roomNumber.toString() + ')'));
       }
       avgHeight = 0;
       avgWeight = 0;
     }
   }
 
-  void _drawPathToRoom(Path path, double scaleX, double scaleY) {
+  void _drawPathToRoom(Canvas canvas, Path path, double scaleX, double scaleY) {
     for (final element in _pathModel) {
-      path.moveTo(element.path.first.x * scaleX, element.path.first.y * scaleY);
-      for (final node in element.path) {
-        path.lineTo(node.x * scaleX, node.y * scaleY);
-        path.moveTo(node.x * scaleX, node.y * scaleY);
+      if (element != null) {
+        path.moveTo(
+            element.path.first.x * scaleX, element.path.first.y * scaleY);
+        for (final node in element.path) {
+          path.lineTo(node.x * scaleX, node.y * scaleY);
+          path.moveTo(node.x * scaleX, node.y * scaleY);
+        }
+        path.close();
       }
     }
-    path.close();
+  }
+
+  void drawIcon(Canvas canvas, double x, double y) {
+    final icon = Icons.add_location_outlined;
+    TextPainter textPainter = TextPainter(textDirection: TextDirection.ltr);
+    textPainter.text = TextSpan(
+      text: String.fromCharCode(icon.codePoint),
+      style: TextStyle(
+        color: appColors['way_color'],
+        fontSize: 12,
+        fontFamily: icon.fontFamily,
+        package: icon.fontPackage, // This line is mandatory for external icon packs
+      ),
+    );
+    textPainter.layout();
+    textPainter.paint(canvas, Offset(x-12, y - 12));
   }
 
   void _paintText(Canvas canvas, Size size, String roomNumber) {
     final textSpan = TextSpan(
-        text: roomNumber, style: TextStyle(color: Colors.black, fontSize: 12));
+        text: roomNumber, style: TextStyle(color: Colors.black, fontSize: 10));
     final textPainter = TextPainter(
       text: textSpan,
       textDirection: TextDirection.ltr,

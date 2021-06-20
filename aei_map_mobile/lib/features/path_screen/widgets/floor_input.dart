@@ -22,7 +22,6 @@ class FloorInput extends StatelessWidget {
               enabledBorder: InputBorder.none,
               errorBorder: InputBorder.none,
               contentPadding: EdgeInsets.only(top: 2.0, left: 10)),
-          keyboardType: TextInputType.number,
           onChanged: onChanged,
         ),
       ),

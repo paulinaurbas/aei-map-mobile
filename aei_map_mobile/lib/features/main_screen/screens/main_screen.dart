@@ -36,9 +36,7 @@ class _MainScreenState extends State<MainScreen> {
           backgroundColor: appColors['background_color'],
           unselectedItemColor: Colors.white,
           onTap: onTabTapped,
-          // new
           currentIndex: _currentIndex,
-          // new
           items: [
             BottomNavigationBarItem(
               icon: Icon(Icons.map),

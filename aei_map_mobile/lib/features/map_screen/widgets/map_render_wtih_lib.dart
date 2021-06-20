@@ -5,12 +5,13 @@ import 'package:aei_map_mobile/styles/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class RenderMap extends CustomPainter {
-  RenderMap(
-      this.absoluteImageSize, this.phoneSize, this._roomModel, this._pathModel);
+  RenderMap(this.absoluteImageSize, this.phoneSize, this._roomModel,
+      this._pathModel, this._filteredRoomsModel);
 
   final Size phoneSize;
   final List<RoomModel> _roomModel;
   final List<PathModel> _pathModel;
+  final List<int> _filteredRoomsModel;
   final Size absoluteImageSize;
   double avgHeight = 0;
   double avgWeight = 0;
@@ -42,15 +43,30 @@ class RenderMap extends CustomPainter {
     canvas.drawPath(drawRoomsOnMap, roomsPainter);
     canvas.drawPath(drawRoomsOnMap, pathLineStroke);
 
-
     if (_pathModel != null) canvas.drawPath(pathToRoom, pathLine);
-    if (_pathModel != null) drawIcon(canvas, (_pathModel.last.path.last.x) * scaleX, _pathModel.last.path.last.y * scaleY);
-    _drawRoomsNumber(canvas, scaleX, scaleY);
 
+    if (_filteredRoomsModel != null) {
+      final Paint filteredRoomsPainter = Paint()
+        ..style = PaintingStyle.fill
+        ..color = appColors['filtered_room_color'];
+      Path drawFilteredRoomsOnMap = Path();
+      _drawRooms(drawFilteredRoomsOnMap, scaleX, scaleY, filtered: true);
+      canvas.drawPath(drawFilteredRoomsOnMap, filteredRoomsPainter);
+    }
+
+    if (_pathModel != null)
+      drawIcon(canvas, (_pathModel.last.path.last.x) * scaleX,
+          _pathModel.last.path.last.y * scaleY);
+    _drawRoomsNumber(canvas, scaleX, scaleY);
   }
 
-  void _drawRooms(Path drawRoomsOnMap, double scaleX, double scaleY) {
-    for (final element in _roomModel) {
+  void _drawRooms(Path drawRoomsOnMap, double scaleX, double scaleY,
+      {bool filtered = false}) {
+    for (final element in filtered
+        ? _roomModel
+            .where((element) => _filteredRoomsModel.contains(element.id))
+            .toList()
+        : _roomModel) {
       drawRoomsOnMap.moveTo(element.listOfNodes.first.x * scaleX,
           element.listOfNodes.first.y * scaleY);
       for (final node in element.listOfNodes) {
@@ -74,9 +90,12 @@ class RenderMap extends CustomPainter {
         _paintText(
             canvas,
             Size(avgWeight * scaleY, avgHeight * scaleX),
-           (element.roomNumber > 0 ? element.roomNumber.toString() : element.room.toString() +
-                ' (' +
-               element.roomNumber.toString() + ')'));
+            (element.roomNumber > 0
+                ? element.roomNumber.toString()
+                : element.room.toString() +
+                    ' (' +
+                    element.roomNumber.toString() +
+                    ')'));
       }
       avgHeight = 0;
       avgWeight = 0;
@@ -106,11 +125,12 @@ class RenderMap extends CustomPainter {
         color: appColors['way_color'],
         fontSize: 12,
         fontFamily: icon.fontFamily,
-        package: icon.fontPackage, // This line is mandatory for external icon packs
+        package:
+            icon.fontPackage, // This line is mandatory for external icon packs
       ),
     );
     textPainter.layout();
-    textPainter.paint(canvas, Offset(x-12, y - 12));
+    textPainter.paint(canvas, Offset(x - 12, y - 12));
   }
 
   void _paintText(Canvas canvas, Size size, String roomNumber) {

@@ -1,0 +1,184 @@
+{
+    "filters": [
+        {
+            "name": {
+                "name": "Does it have computers?",
+                "id": 0
+            },
+            "possibleValues": [
+                {
+                    "name": "no",
+                    "id": 0
+                },
+                {
+                    "name": "a bunch",
+                    "id": 1
+                },
+                {
+                    "name": "a lot",
+                    "id": 2
+                }
+            ]
+        },
+        {
+            "name": {
+                "name": "Does it have windows?",
+                "id": 1
+            },
+            "possibleValues": [
+                {
+                    "name": "no",
+                    "id": 0
+                },
+                {
+                    "name": "yes",
+                    "id": 1
+                }
+            ]
+        },
+        {
+            "name": {
+                "name": "How big it is?",
+                "id": 2
+            },
+            "possibleValues": [
+                {
+                    "name": "super small",
+                    "id": 0
+                },
+                {
+                    "name": "decent",
+                    "id": 1
+                },
+                {
+                    "name": "huge",
+                    "id": 2
+                },
+                {
+                    "name": "it's like a football field",
+                    "id": 3
+                }
+            ]
+        },
+        {
+            "name": {
+                "name": "Is it comfortable?",
+                "id": 3
+            },
+            "possibleValues": [
+                {
+                    "name": "as hell",
+                    "id": 0
+                },
+                {
+                    "name": "pretty much yeah",
+                    "id": 1
+                },
+                {
+                    "name": "it's dope",
+                    "id": 2
+                }
+            ]
+        },
+        {
+            "name": {
+                "name": "Is it comfortable2?",
+                "id": 4
+            },
+            "possibleValues": [
+                {
+                    "name": "as hell",
+                    "id": 0
+                },
+                {
+                    "name": "pretty much yeah",
+                    "id": 1
+                },
+                {
+                    "name": "it's dope",
+                    "id": 2
+                }
+            ]
+        },
+        {
+            "name": {
+                "name": "Is it comfortable3?",
+                "id": 5
+            },
+            "possibleValues": [
+                {
+                    "name": "as hell",
+                    "id": 0
+                },
+                {
+                    "name": "pretty much yeah",
+                    "id": 1
+                },
+                {
+                    "name": "it's dope",
+                    "id": 2
+                }
+            ]
+        },
+        {
+            "name": {
+                "name": "Is it comfortable4?",
+                "id": 6
+            },
+            "possibleValues": [
+                {
+                    "name": "as hell",
+                    "id": 0
+                },
+                {
+                    "name": "pretty much yeah",
+                    "id": 1
+                },
+                {
+                    "name": "it's dope",
+                    "id": 2
+                }
+            ]
+        },
+        {
+            "name": {
+                "name": "Is it comfortable5?",
+                "id": 6
+            },
+            "possibleValues": [
+                {
+                    "name": "as hell",
+                    "id": 0
+                },
+                {
+                    "name": "pretty much yeah",
+                    "id": 1
+                },
+                {
+                    "name": "it's dope",
+                    "id": 2
+                }
+            ]
+        },
+        {
+            "name": {
+                "name": "Is it comfortable6?",
+                "id": 7
+            },
+            "possibleValues": [
+                {
+                    "name": "as hell",
+                    "id": 0
+                },
+                {
+                    "name": "pretty much yeah",
+                    "id": 1
+                },
+                {
+                    "name": "it's dope",
+                    "id": 2
+                }
+            ]
+        }
+    ]
+}

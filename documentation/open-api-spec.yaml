@@ -225,15 +225,17 @@ components:
             properties:
               id:
                 type: 'integer'
-              valueId:
-                type: 'integer'
+              valueIds:
+                type: 'array'
+                items:
+                  type: 'integer'
     FilteredRoomsResponse:
       type: 'object'
       properties:
         roomIds:
           type: 'array'
           items:
-            type: 'string'
+            type: 'integer'
     PathRequest:
       type: 'object'
       properties:

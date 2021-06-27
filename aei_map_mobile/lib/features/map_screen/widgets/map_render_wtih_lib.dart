@@ -38,12 +38,12 @@ class RenderMap extends CustomPainter {
       ..color = appColors['background_color']
       ..strokeWidth = 0.5;
 
-    if (_pathModel != null) _drawPathToRoom(canvas, pathToRoom, scaleX, scaleY);
+    if (_pathModel != null && _pathModel.isNotEmpty && _pathModel.length > 0) _drawPathToRoom(canvas, pathToRoom, scaleX, scaleY);
 
     canvas.drawPath(drawRoomsOnMap, roomsPainter);
     canvas.drawPath(drawRoomsOnMap, pathLineStroke);
 
-    if (_pathModel != null) canvas.drawPath(pathToRoom, pathLine);
+    if (_pathModel != null && _pathModel.isNotEmpty && _pathModel.length > 0) canvas.drawPath(pathToRoom, pathLine);
 
     if (_filteredRoomsModel != null) {
       final Paint filteredRoomsPainter = Paint()
@@ -54,7 +54,7 @@ class RenderMap extends CustomPainter {
       canvas.drawPath(drawFilteredRoomsOnMap, filteredRoomsPainter);
     }
 
-    if (_pathModel != null)
+    if (_pathModel != null && _pathModel.isNotEmpty && _pathModel.length > 0)
       drawIcon(canvas, (_pathModel.last.path.last.x) * scaleX,
           _pathModel.last.path.last.y * scaleY);
     _drawRoomsNumber(canvas, scaleX, scaleY);
